@@ -1,0 +1,5 @@
+services:
+    Dalilak.util.service:
+      class: Dalilak\VenueBundle\Services\UtilService
+      arguments:
+          container: "@service_container"

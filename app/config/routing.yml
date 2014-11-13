@@ -1,0 +1,15 @@
+dalilak_public_services:
+    resource: "@DalilakPublicServicesBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+dalilak_venue:
+    resource: "@DalilakVenueBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+dalilak_user:
+    resource: "@DalilakUserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
