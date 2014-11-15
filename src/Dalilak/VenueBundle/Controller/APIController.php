@@ -15,28 +15,48 @@ use Symfony\Component\Routing\Annotation\Route;
  * 
  * @Route("/api/v1")
  */
-class APIController extends BaseController{
-    
+class APIController extends BaseController {
+
     /**
      * @Route("/venues")
      */
-    public function getVenue(){
+    public function getVenue() {
         $venues = $this->getDoctrine()->getRepository("DalilakVenueBundle:Venue")->findAll();
         $venuesArray = array();
-        foreach ($venues as $venue){
+        foreach ($venues as $venue) {
             $venuesArray[] = $venue->toArray();
         }
         return $this->prepareResponse($venuesArray);
     }
-    
+
     /**
      * Get venue by category alias
      * 
-     * @Route("/venue/category/{category_alias}")
+     * @Route("/venue/category/{category_alias}/{limit}/{last_id}")
      */
-    public function getByCategory($category_alias){
-        $venues = $this->getDoctrine()->getRepository('DalilakVenueBundle:Venue')->getByCategoryAlias($category_alias);
+    public function getByCategory($category_alias, $limit = 5, $last_id = null) {
+        $venues = $this->getDoctrine()->getRepository('DalilakVenueBundle:Venue')->getByCategoryAlias($category_alias, $limit, $last_id);
         $venuesArray = $this->getAppService('util')->entitiesToArray($venues);
         return $this->prepareResponse($venuesArray);
     }
+
+    /**
+     * @Route("/venue/name/{name}/{limit}/{last_id}")
+     */
+    public function getByName($name, $limit = 5, $last_id = null) {
+        $venues = $this->getDoctrine()->getRepository('DalilakVenueBundle:Venue')->findByName($name, $limit, $last_id);
+        $venuesArray = $this->getAppService('util')->entitiesToArray($venues);
+        return $this->prepareResponse($venuesArray);
+    }
+
+    /**
+     * Get venue by id
+     * 
+     * @Route("/venue/{id}")
+     */
+    public function getById($id) {
+        $venue = $this->getDoctrine()->getRepository('DalilakVenueBundle:Venue')->find($id);
+        return $this->prepareResponse($venue->toArray());
+    }
+
 }

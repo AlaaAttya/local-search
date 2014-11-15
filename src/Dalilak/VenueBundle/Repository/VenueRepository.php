@@ -22,15 +22,60 @@ class VenueRepository extends EntityRepository {
      * Get Venues by category alias
      * 
      * @param string $category_alias
+     * @param integer $limit
      */
-    public function getByCategoryAlias($category_alias) {
+    public function getByCategoryAlias($category_alias, $limit = 5, $last_id = null) {
         $q = $this->createQueryBuilder('venue');
-        return $q->innerJoin("venue.categories", "c")
-                        ->where(
-                                $q->expr()->like('c.alias', ':category_alias')
-                        )->setParameter('category_alias', "%$category_alias%")
-                        ->getQuery()
-                        ->getResult();
+        if (!empty($last_id) && $last_id != null) {
+            return $q->innerJoin("venue.categories", "c")
+                            ->where(
+                                    $q->expr()->like('c.alias', ':category_alias')
+                            )
+                            ->andWhere("venue.id >= :venue_id")
+                            ->setMaxResults($limit)
+                            ->setParameter('category_alias', "%$category_alias%")
+                            ->setParameter('venue_id', $last_id)
+                            ->getQuery()
+                            ->getResult();
+        } else {
+            return $q->innerJoin("venue.categories", "c")
+                            ->where(
+                                    $q->expr()->like('c.alias', ':category_alias')
+                            )
+                            ->setMaxResults($limit)
+                            ->setParameter('category_alias', "%$category_alias%")
+                            ->getQuery()
+                            ->getResult();
+        }
+    }
+
+    /**
+     * Get venues bu name
+     * 
+     * @param string $name
+     * @param integer $limit
+     */
+    public function findByName($name, $limit = 5, $last_id = null) {
+        $q = $this->createQueryBuilder('venue');
+        if (!empty($last_id) && $last_id != null) {
+            return $q->where(
+                                    $q->expr()->like('venue.name', ':venue_name')
+                            )
+                            ->andWhere('venue.id >= :venue_id')
+                            ->setMaxResults($limit)
+                            ->setParameter('venue_name', "%$name%")
+                            ->setParameter('venue_id', "$last_id")
+                            ->getQuery()
+                            ->getResult();
+        } else {
+            return $q->where(
+                                    $q->expr()->like('venue.name', ':venue_name')
+                            )
+                            ->setMaxResults($limit)
+                            ->setParameter('venue_name', "%$name%")
+                            ->getQuery()
+                            ->getResult();
+        }
     }
 
 }
