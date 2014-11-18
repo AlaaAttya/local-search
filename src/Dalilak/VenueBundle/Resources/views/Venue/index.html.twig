@@ -1,6 +1,10 @@
-{% extends '::base.html.twig' %}
+{% extends 'DalilakVenueBundle:Layouts:base.html.twig' %}
 
-{% block body -%}
+{% block title %}List venues{% endblock %}
+{% block scripts %}{{parent()}}{% endblock %}
+{% block styles %}{{parent()}}{% endblock %}
+
+{% block content -%}
     <h1>Venue list</h1>
 
     <table class="records_list">

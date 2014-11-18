@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        {% block styles %}
+            <link rel="stylesheet" type="text/css" href="{{asset('bundles/bower_components/bootstrap/dist/css/bootstrap.min.css')}}" />
+        {% endblock %}
+    </head>
+    <body>
+        {% block content %}
+            
+        {% endblock %}
+        {% block scripts %}
+        {% endblock %}
+    </body>
+</html>

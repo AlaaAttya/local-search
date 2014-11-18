@@ -56,7 +56,17 @@ class APIController extends BaseController {
      */
     public function getById($id) {
         $venue = $this->getDoctrine()->getRepository('DalilakVenueBundle:Venue')->find($id);
-        return $this->prepareResponse($venue->toArray());
+        if (count($venue) && isset($venue))
+            return $this->prepareResponse($venue->toArray());
+        else
+            return $this->prepareResponse(
+                            array(
+                                "error" => array(
+                                    "code" => "404",
+                                    "msg" => "Venue not found!"
+                                )
+                            )
+            );
     }
 
 }

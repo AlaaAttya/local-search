@@ -35,7 +35,9 @@ class VenueType extends AbstractType
             ->add('openingTimes')
             ->add('offers')
             ->add('services')
-            ->add('address')
+            ->add('address_text')
+            ->add('address_longitude')
+            ->add('address_latitude')    
             ->add('categories')
         ;
     }

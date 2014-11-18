@@ -42,15 +42,6 @@ class Venue {
     private $nameAr;
 
     /**
-     * @var Address
-     *
-     * @ORM\ManyToOne(targetEntity="Dalilak\VenueBundle\Entity\Address")
-     * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
-     * 
-     */
-    private $address;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
@@ -81,14 +72,14 @@ class Venue {
     /**
      * @var string
      *
-     * @ORM\Column(name="opening_times", type="string", length=255)
+     * @ORM\Column(name="opening_times", type="text")
      */
     private $openingTimes;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="offers", type="string", length=255)
+     * @ORM\Column(name="offers", type="text")
      */
     private $offers;
 
@@ -116,6 +107,27 @@ class Venue {
      * )
      * */
     private $categories;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="address_longitude", type="string", length=255)
+     */
+    private $address_longitude;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="address_latitude", type="string", length=255)
+     */
+    private $address_latitude;
+
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="address_text", type="text")
+     */
+    private $address_text;
 
     /**
      * Get id
@@ -166,27 +178,6 @@ class Venue {
      */
     public function getNameAr() {
         return $this->nameAr;
-    }
-
-    /**
-     * Set address
-     *
-     * @param string $address
-     * @return Venue
-     */
-    public function setAddress($address) {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return string 
-     */
-    public function getAddress() {
-        return $this->address;
     }
 
     /**
@@ -451,11 +442,74 @@ class Venue {
         return $categories;
     }
 
+    /**
+     * Set longitude
+     *
+     * @param string $longitude
+     * @return Address
+     */
+    public function setAddressLongitude($longitude) {
+        $this->address_longitude = $longitude;
+
+        return $this;
+    }
+
+    /**
+     * Get longitude
+     *
+     * @return string 
+     */
+    public function getAddressLongitude() {
+        return $this->address_longitude;
+    }
+
+    /**
+     * Set latitude
+     *
+     * @param string $latitude
+     * @return Address
+     */
+    public function setAddressLatitude($latitude) {
+        $this->address_latitude = $latitude;
+
+        return $this;
+    }
+
+    /**
+     * Get latitude
+     *
+     * @return string 
+     */
+    public function getAddressLatitude() {
+        return $this->address_latitude;
+    }
+
+    /**
+     * Set text
+     *
+     * @param string $text
+     * @return Address
+     */
+    public function setAddressText($text) {
+        $this->address_text = $text;
+
+        return $this;
+    }
+
+    /**
+     * Get text
+     *
+     * @return string 
+     */
+    public function getAddressText() {
+        return $this->address_text;
+    }
+
     public function __toString() {
         return $this->name;
     }
 
-        /**
+    /**
      * Retuen array representation of the current object
      * @access public
      * 
@@ -471,7 +525,11 @@ class Venue {
             'facebook' => $this->facebook,
             'twitter' => $this->twitter,
             'offers' => $this->offers,
-            'address'=> isset($this->address)&&!empty($this->address)? $this->address->toArray() : array(),
+            'address' => array(
+                'text' => $this->getAddressText(),
+                'latitude' => $this->getAddressLatitude(),
+                'logitude' => $this->getAddressLongitude()
+            ),
             'opening_times' => $this->openingTimes,
             'services' => $this->services,
             'categories' => $this->getCategoriesAsArray(),
@@ -479,4 +537,5 @@ class Venue {
         );
         return $venue;
     }
+
 }
