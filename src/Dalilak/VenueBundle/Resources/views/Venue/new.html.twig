@@ -1,19 +1,194 @@
 {% extends 'DalilakVenueBundle:Layouts:base.html.twig' %}
 
-{% block title %}List venues{% endblock %}
-{% block scripts %}{{parent()}}{% endblock %}
+{% block title %}Create venue{% endblock %}
+{% block scripts %}
+    {{parent()}}
+    <script src="{{asset('bundles/bower_components/tinymce/tinymce.min.js')}}"></script>
+    <script>
+        tinymce.init({
+            selector: '.editor'
+        });
+
+    </script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKWdNMxqng_iXcsFH5h_QS-0c4rU3kCVA&libraries=places"></script>
+    <!-- Goole Maps  -->
+    <script type="text/javascript">
+
+        var autocomplete, map, marker;
+
+        /**
+         * Update the map markers from the autocomplete
+         */
+        function setMarker() {
+            var place = autocomplete.getPlace();
+            var pos = new google.maps.LatLng(place.geometry.location.lat(),
+                    place.geometry.location.lng());
+            map.setCenter(pos);        
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            marker.setPosition(pos);
+            document.getElementById('dalilak_venuebundle_venue_address_latitude').value = place.geometry.location.lat().toFixed(6);
+            document.getElementById('dalilak_venuebundle_venue_address_longitude').value = place.geometry.location.lng().toFixed(6);
+        }
+
+        /**
+         * Initialize map with the current location
+         */
+        function map_init() {
+            // Auto complete init
+            // Create the autocomplete object, restricting the search
+            // to geographical location types.
+            autocomplete = new google.maps.places.Autocomplete(
+                    /** @type {HTMLInputElement} */(document.getElementById('dalilak_venuebundle_venue_address_text')),
+                    {types: ['geocode']});
+            // When the user selects an address from the dropdown,
+            // set the marker
+            google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                setMarker();
+            });
+
+
+            var mapOptions = {
+                zoom: 8
+            };
+            map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+
+            // Try HTML5 geolocation
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = new google.maps.LatLng(position.coords.latitude,
+                            position.coords.longitude);
+
+                    marker = new google.maps.Marker({
+                        position: pos,
+                        map: map, // handle of the map 
+                        draggable: true,
+                        animation: google.maps.Animation.DROP
+                    });
+
+                    // Add drag event listener to the map
+                    google.maps.event.addListener(marker, 'dragend', function(evt) {
+                        document.getElementById('dalilak_venuebundle_venue_address_latitude').value = evt.latLng.lat().toFixed(6);
+                        document.getElementById('dalilak_venuebundle_venue_address_longitude').value = evt.latLng.lng().toFixed(6);
+
+                        map.panTo(evt.latLng);
+                    });
+
+                    map.setCenter(pos);
+                }, function() {
+                    handleNoGeolocation(true);
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleNoGeolocation(false);
+            }
+        }
+
+        /**
+         * Handling browsers which do not support Geolocation
+         */
+        function handleNoGeolocation(errorFlag) {
+            if (errorFlag) {
+                var content = 'Error: The Geolocation service failed.';
+            } else {
+                var content = 'Error: Your browser doesn\'t support geolocation.';
+            }
+
+            var options = {
+                map: map,
+                position: new google.maps.LatLng(60, 105),
+                content: content
+            };
+
+            var infowindow = new google.maps.InfoWindow(options);
+            map.setCenter(options.position);
+        }
+
+        // Add the map to DOM on page load
+        google.maps.event.addDomListener(window, 'load', map_init);
+    </script>
+{% endblock %}
 {% block styles %}{{parent()}}{% endblock %}
 
 {% block content -%}
     <h1>Venue creation</h1>
 
-    {{ form(form) }}
+    <form action="{{path('venue_create')}}" {{ form_enctype(form)}} style="height: 2400px;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
+        <div class="form-group">
+            {{form_label(form.name, 'Name')}}
+            {{form_widget(form.name, {'attr':{'class':'form-control'}})}}
+        </div>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('venue') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+        <div class="form-group">
+            {{form_label(form.nameAr, 'Arabic Name')}}
+            {{form_widget(form.nameAr, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(form.email, 'Email')}}
+            {{form_widget(form.email, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(form.facebook, 'Facebook')}}
+            {{form_widget(form.facebook, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(form.twitter, 'Twitter')}}
+            {{form_widget(form.twitter, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(form.website, 'Website')}}
+            {{form_widget(form.website, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(form.openingTimes, 'Opening Times')}}
+            {{form_widget(form.openingTimes, {'attr':{'class':'form-control editor'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(form.offers, 'Offers')}}
+            {{form_widget(form.offers, {'attr':{'class':'form-control editor'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(form.services, 'Services')}}
+            {{form_widget(form.services, {'attr':{'class':'form-control editor'}})}}
+        </div>
+        <div style="height:600px" id="map-canvas"></div>
+        <div class="form-group">
+            {{form_label(form.address_text, 'Address')}}
+            {{form_widget(form.address_text, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group row col-md-12">
+            <div class="col-md-4">
+                {{form_label(form.address_longitude, 'Longitude')}}
+                {{form_widget(form.address_longitude, {'attr':{'class':'form-control'}})}}
+            </div>
+            <div class="col-md-4">
+                {{form_label(form.address_latitude, 'Latitude')}}
+                {{form_widget(form.address_latitude, {'attr':{'class':'form-control '}})}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{form_label(form.categories, 'Categories')}}
+            {{form_widget(form.categories, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        {{form_widget(form._token)}}
+        <button class="btn btn-primary">Create</button>
+    </form>
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('venue') }}">
+                Back to the list
+            </a>
+        </li>
+    </ul>
 {% endblock %}

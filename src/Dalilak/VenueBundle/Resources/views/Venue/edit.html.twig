@@ -1,16 +1,196 @@
-{% extends '::base.html.twig' %}
+{% extends 'DalilakVenueBundle:Layouts:base.html.twig' %}
 
-{% block body -%}
+{% block title %}Edit venue{% endblock %}
+{% block scripts %}
+    {{parent()}}
+    <script src="{{asset('bundles/bower_components/tinymce/tinymce.min.js')}}"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: '.editor'
+        });
+    </script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKWdNMxqng_iXcsFH5h_QS-0c4rU3kCVA&libraries=places"></script>
+    <!-- Goole Maps  -->
+    <script type="text/javascript">
+
+        var autocomplete, map, marker;
+
+        /**
+         * Update the map markers from the autocomplete
+         */
+        function setMarker() {
+            var place = autocomplete.getPlace();
+            var pos = new google.maps.LatLng(place.geometry.location.lat(),
+                    place.geometry.location.lng());
+            map.setCenter(pos);        
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            marker.setPosition(pos);
+            document.getElementById('dalilak_venuebundle_venue_address_latitude').value = place.geometry.location.lat().toFixed(6);
+            document.getElementById('dalilak_venuebundle_venue_address_longitude').value = place.geometry.location.lng().toFixed(6);
+        }
+
+        /**
+         * Initialize map with the current location
+         */
+        function map_init() {
+            // Auto complete init
+            // Create the autocomplete object, restricting the search
+            // to geographical location types.
+            autocomplete = new google.maps.places.Autocomplete(
+                    /** @type {HTMLInputElement} */(document.getElementById('dalilak_venuebundle_venue_address_text')),
+                    {types: ['geocode']});
+            // When the user selects an address from the dropdown,
+            // set the marker
+            google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                setMarker();
+            });
+
+
+            var mapOptions = {
+                zoom: 8
+            };
+            map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+
+            // Try HTML5 geolocation
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = new google.maps.LatLng({{entity.addressLatitude}},
+                            {{entity.addressLongitude}});
+                                
+                    marker = new google.maps.Marker({
+                        position: pos,
+                        map: map, // handle of the map 
+                        draggable: true,
+                        animation: google.maps.Animation.DROP
+                    });
+
+                    // Add drag event listener to the map
+                    google.maps.event.addListener(marker, 'dragend', function(evt) {
+                        document.getElementById('dalilak_venuebundle_venue_address_latitude').value = evt.latLng.lat().toFixed(6);
+                        document.getElementById('dalilak_venuebundle_venue_address_longitude').value = evt.latLng.lng().toFixed(6);
+
+                        map.panTo(evt.latLng);
+                    });
+
+                    map.setCenter(pos);
+                }, function() {
+                    handleNoGeolocation(true);
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleNoGeolocation(false);
+            }
+        }
+
+        /**
+         * Handling browsers which do not support Geolocation
+         */
+        function handleNoGeolocation(errorFlag) {
+            if (errorFlag) {
+                var content = 'Error: The Geolocation service failed.';
+            } else {
+                var content = 'Error: Your browser doesn\'t support geolocation.';
+            }
+
+            var options = {
+                map: map,
+                position: new google.maps.LatLng(60, 105),
+                content: content
+            };
+
+            var infowindow = new google.maps.InfoWindow(options);
+            map.setCenter(options.position);
+        }
+
+        // Add the map to DOM on page load
+        google.maps.event.addDomListener(window, 'load', map_init);
+    </script>
+{% endblock %}
+{% block styles %}{{parent()}}{% endblock %}
+
+{% block content -%}
     <h1>Venue edit</h1>
 
-    {{ form(edit_form) }}
+    <form action="{{path('venue_update', {'id':app.request.attributes.get('id')})}}" {{ form_enctype(edit_form)}} style="height: 2400px;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
+        <input type="hidden" name="_method" value="PUT">
+        <div class="form-group">
+            {{form_label(edit_form.name, 'Name')}}
+            {{form_widget(edit_form.name, {'attr':{'class':'form-control'}})}}
+        </div>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('venue') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+        <div class="form-group">
+            {{form_label(edit_form.nameAr, 'Arabic Name')}}
+            {{form_widget(edit_form.nameAr, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(edit_form.email, 'Email')}}
+            {{form_widget(edit_form.email, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(edit_form.facebook, 'Facebook')}}
+            {{form_widget(edit_form.facebook, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(edit_form.twitter, 'Twitter')}}
+            {{form_widget(edit_form.twitter, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(edit_form.website, 'Website')}}
+            {{form_widget(edit_form.website, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(edit_form.openingTimes, 'Opening Times')}}
+            {{form_widget(edit_form.openingTimes, {'attr':{'class':'form-control editor'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(edit_form.offers, 'Offers')}}
+            {{form_widget(edit_form.offers, {'attr':{'class':'form-control editor'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(edit_form.services, 'Services')}}
+            {{form_widget(edit_form.services, {'attr':{'class':'form-control editor'}})}}
+        </div>
+
+        <div style="height:600px" id="map-canvas"></div>
+        <div class="form-group">
+            {{form_label(edit_form.address_text, 'Address')}}
+            {{form_widget(edit_form.address_text, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group row col-md-12">
+            <div class="col-md-4">
+                {{form_label(edit_form.address_longitude, 'Longitude')}}
+                {{form_widget(edit_form.address_longitude, {'attr':{'class':'form-control'}})}}
+            </div>
+            <div class="col-md-4">
+                {{form_label(edit_form.address_latitude, 'Latitude')}}
+                {{form_widget(edit_form.address_latitude, {'attr':{'class':'form-control '}})}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{form_label(edit_form.categories, 'Categories')}}
+            {{form_widget(edit_form.categories, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        {{form_widget(edit_form._token)}}
+        <button class="btn btn-primary">Update</button>
+    </form>    
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('venue') }}">
+                Back to the list
+            </a>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
 {% endblock %}

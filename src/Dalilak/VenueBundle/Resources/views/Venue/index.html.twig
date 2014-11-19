@@ -7,7 +7,7 @@
 {% block content -%}
     <h1>Venue list</h1>
 
-    <table class="records_list">
+    <table class="records_list table table-striped">
         <thead>
             <tr>
                 <th>Id</th>
@@ -24,38 +24,38 @@
             </tr>
         </thead>
         <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('venue_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.name }}</td>
-                <td>{{ entity.nameAr }}</td>
-                <td>{{ entity.email }}</td>
-                <td>{{ entity.facebook }}</td>
-                <td>{{ entity.twitter }}</td>
-                <td>{{ entity.website }}</td>
-                <td>{{ entity.openingTimes }}</td>
-                <td>{{ entity.offers }}</td>
-                <td>{{ entity.services }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('venue_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('venue_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('venue_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                    <td>{{ entity.name }}</td>
+                    <td>{{ entity.nameAr }}</td>
+                    <td>{{ entity.email }}</td>
+                    <td>{{ entity.facebook }}</td>
+                    <td>{{ entity.twitter }}</td>
+                    <td>{{ entity.website }}</td>
+                    <td>{{ entity.openingTimes }}</td>
+                    <td>{{ entity.offers }}</td>
+                    <td>{{ entity.services }}</td>
+                    <td>
+                        <ul>
+                            <li class="action-align">
+                                <a href="{{ path('venue_show', { 'id': entity.id }) }}" class="btn btn-primary">show</a>
+                            </li>
+                            <li class="action-align">
+                                <a href="{{ path('venue_edit', { 'id': entity.id }) }}" class="btn btn-success">edit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 
-        <ul>
+    <ul>
         <li>
-            <a href="{{ path('venue_new') }}">
+            <a href="{{ path('venue_new') }}" class="btn btn-primary">
                 Create a new entry
             </a>
         </li>
     </ul>
-    {% endblock %}
+{% endblock %}
