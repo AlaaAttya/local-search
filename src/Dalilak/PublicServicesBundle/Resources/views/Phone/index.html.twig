@@ -1,9 +1,13 @@
-{% extends '::base.html.twig' %}
+{% extends 'DalilakVenueBundle:Layouts:base.html.twig' %}
 
-{% block body -%}
+{% block title %}List Phone Numbers{% endblock %}
+{% block scripts %}{{parent()}}{% endblock %}
+{% block styles %}{{parent()}}{% endblock %}
+
+{% block content -%}
     <h1>Phone list</h1>
 
-    <table class="records_list">
+    <table class="records_list table table-striped">
         <thead>
             <tr>
                 <th>Id</th>
@@ -20,11 +24,11 @@
                 <td>{{ entity.number }}</td>
                 <td>
                 <ul>
-                    <li>
-                        <a href="{{ path('phone_show', { 'id': entity.id }) }}">show</a>
+                    <li class="action-align">
+                        <a href="{{ path('phone_show', { 'id': entity.id }) }}" class="btn btn-primary">show</a>
                     </li>
-                    <li>
-                        <a href="{{ path('phone_edit', { 'id': entity.id }) }}">edit</a>
+                    <li class="action-align">
+                        <a href="{{ path('phone_edit', { 'id': entity.id }) }}" class="btn btn-success">edit</a>
                     </li>
                 </ul>
                 </td>
@@ -35,7 +39,7 @@
 
         <ul>
         <li>
-            <a href="{{ path('phone_new') }}">
+            <a href="{{ path('phone_new') }}"  class="btn btn-primary">
                 Create a new entry
             </a>
         </li>

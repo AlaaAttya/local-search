@@ -92,4 +92,11 @@ class Phone {
         return $this->number;
     }
 
+    public function toArray() {
+        return array(
+            'title' => $this->title,
+            'number' => $this->number
+        );
+    }
+
 }

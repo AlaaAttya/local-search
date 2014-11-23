@@ -68,5 +68,27 @@ class APIController extends BaseController {
                             )
             );
     }
+    
+    /**
+     * Get all categories
+     * 
+     * @Route("/category")
+     */
+    public function getAllCategoriesAction(){
+        $categories = $this->getDoctrine()->getRepository('DalilakVenueBundle:Category')->findAll();
+        $categoriesArray = $this->getAppService('util')->entitiesToArray($categories);
+        return $this->prepareResponse($categoriesArray);
+    }
+    
+    /**
+     * Get all public services numbers
+     * 
+     * @Route("/public-numbers")
+     */
+    public function getPublicServicesAction(){
+        $numbers = $this->getDoctrine()->getRepository('DalilakPublicServicesBundle:Phone')->findAll();
+        $numbersArray = $this->getAppService('util')->entitiesToArray($numbers);
+        return $this->prepareResponse($numbersArray);
+    }
 
 }

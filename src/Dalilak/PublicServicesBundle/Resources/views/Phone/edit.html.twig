@@ -1,16 +1,34 @@
-{% extends '::base.html.twig' %}
+{% extends 'DalilakVenueBundle:Layouts:base.html.twig' %}
 
-{% block body -%}
+{% block title %}Edit Phone{% endblock %}
+{% block scripts %}{{parent()}}{% endblock %}
+{% block styles %}{{parent()}}{% endblock %}
+
+{% block content -%}
     <h1>Phone edit</h1>
 
-    {{ form(edit_form) }}
+    <form action="{{path('phone_update', {'id':app.request.attributes.get('id')})}}" {{ form_enctype(edit_form)}} style="height: 700px;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
+        <input type="hidden" name="_method" value="PUT">
+        <div class="form-group">
+            {{form_label(edit_form.title, 'Title')}}
+            {{form_widget(edit_form.title, {'attr':{'class':'form-control'}})}}
+        </div>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('phone') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+        <div class="form-group">
+            {{form_label(edit_form.number, 'Number')}}
+            {{form_widget(edit_form.number, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        {{form_widget(edit_form._token)}}
+        <button class="btn btn-primary">Update</button>
+    </form>
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('phone') }}">
+                Back to the list
+            </a>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
 {% endblock %}

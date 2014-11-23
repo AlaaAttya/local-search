@@ -1,15 +1,30 @@
-{% extends '::base.html.twig' %}
+{% extends 'DalilakVenueBundle:Layouts:base.html.twig' %}
 
-{% block body -%}
+{% block title %}Category edit{% endblock %}
+{% block scripts %}{{parent()}}{% endblock %}
+{% block styles %}{{parent()}}{% endblock %}
+
+{% block content -%}
     <h1>Category creation</h1>
+    <form action="{{path('category_create')}}" {{ form_enctype(form)}} style="height: 700px;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
+        <div class="form-group">
+            {{form_label(form.title, 'Title')}}
+            {{form_widget(form.title, {'attr':{'class':'form-control'}})}}
+        </div>
 
-    {{ form(form) }}
+        <div class="form-group">
+            {{form_label(form.alias, 'Alias')}}
+            {{form_widget(form.alias, {'attr':{'class':'form-control'}})}}
+        </div>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('category') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+        {{form_widget(form._token)}}
+        <button class="btn btn-primary">Create</button>
+    </form>
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('category') }}">
+                Back to the list
+            </a>
+        </li>
+    </ul>
 {% endblock %}
