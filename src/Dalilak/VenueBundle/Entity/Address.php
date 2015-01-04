@@ -119,11 +119,10 @@ class Address {
     public function getText() {
         return $this->text;
     }
-    
-    public function __toString(){
+
+    public function __toString() {
         return $this->text;
     }
-
 
     /**
      * Return object as an array
@@ -131,11 +130,11 @@ class Address {
      * @access public
      * @return array
      */
-    public function toArray(){
+    public function toArray() {
         $address = array(
-            'id'=>  $this->id,
-            'logitude'=>  $this->longitude,
-            'latitude'=> $this->latitude,
+            'id' => $this->id,
+            'logitude' => $this->longitude,
+            'latitude' => $this->latitude,
             'text' => $this->text
         );
         return $address;

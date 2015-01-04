@@ -6,12 +6,18 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * VenuePhone
+ * 
+ * @author Alaa Attya <alaa.attya91@gmail.com> 
+ * @package Dalilak.VenueBundle.Entity
+ * @version 1.0
+ * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @category Entity
  *
- * @ORM\Table()
+ * @ORM\Table(name="venue_phones")
  * @ORM\Entity(repositoryClass="Dalilak\VenueBundle\Repository\VenuePhoneRepository")
  */
-class VenuePhone
-{
+class VenuePhone {
+
     /**
      * @var integer
      *
@@ -36,14 +42,12 @@ class VenuePhone
      */
     private $venue;
 
-
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -53,8 +57,7 @@ class VenuePhone
      * @param string $number
      * @return VenuePhone
      */
-    public function setNumber($number)
-    {
+    public function setNumber($number) {
         $this->number = $number;
 
         return $this;
@@ -65,9 +68,37 @@ class VenuePhone
      *
      * @return string 
      */
-    public function getNumber()
-    {
+    public function getNumber() {
         return $this->number;
     }
 
+    /**
+     * Set venue
+     *
+     * @param \Dalilak\VenueBundle\Entity\Venue $venue
+     * @return VenuePhone
+     */
+    public function setVenue(\Dalilak\VenueBundle\Entity\Venue $venue = null) {
+        $this->venue = $venue;
+
+        return $this;
+    }
+
+    /**
+     * Get venue
+     *
+     * @return \Dalilak\VenueBundle\Entity\Venue 
+     */
+    public function getVenue() {
+        return $this->venue;
+    }
+    
+    public function toArray(){
+        $phone = array(
+            'id'=>  $this->id,
+            'number'=>  $this->number
+        );
+        
+        return $phone;
+    }
 }

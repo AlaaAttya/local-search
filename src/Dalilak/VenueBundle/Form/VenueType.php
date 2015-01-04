@@ -5,7 +5,7 @@ namespace Dalilak\VenueBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
+use Dalilak\VenueBundle\Form\BranchType;
 
 /**
  * Venue Form
@@ -17,36 +17,45 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @category Form
  * 
  */
-class VenueType extends AbstractType
-{
-        /**
+class VenueType extends AbstractType {
+
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            ->add('name','text',array('required' => false))
-            ->add('nameAr','text',array('required' => false))
-            ->add('email','text',array('required' => false))
-            ->add('facebook','text',array('required' => false))
-            ->add('twitter','text',array('required' => false))
-            ->add('website','text',array('required' => false))
-            ->add('openingTimes','text',array('required' => false))
-            ->add('offers','text',array('required' => false))
-            ->add('services','text',array('required' => false))
-            ->add('address_text', 'text',array('required' => false))
-            ->add('address_longitude','text',array('required' => false))
-            ->add('address_latitude','text',array('required' => false))    
-            ->add('categories')
+                ->add('name', 'text', array('required' => false))
+                ->add('nameAr', 'text', array('required' => false))
+                ->add('email', 'text', array('required' => false))
+                ->add('facebook', 'text', array('required' => false))
+                ->add('twitter', 'text', array('required' => false))
+                ->add('website', 'text', array('required' => false))
+                ->add('openingTimes', 'text', array('required' => false))
+                ->add('offers', 'text', array('required' => false))
+                ->add('services', 'text', array('required' => false))
+                ->add('address_text', 'text', array('required' => false))
+                ->add('address_longitude', 'text', array('required' => false))
+                ->add('address_latitude', 'text', array('required' => false))
+                ->add('categories')
+                ->add('branches', 'collection', array(
+                    'type' => new BranchType(),
+                    'allow_add' => true,
+                    'by_reference' => false,
+                    'allow_delete' => true,
+                    'prototype' => true,
+                    'options' => array(
+                        'data_class' => 'Dalilak\VenueBundle\Entity\Branch'
+                    )
+                        )
+                )
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
+    public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'Dalilak\VenueBundle\Entity\Venue'
         ));
@@ -55,8 +64,8 @@ class VenueType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return 'dalilak_venuebundle_venue';
     }
+
 }

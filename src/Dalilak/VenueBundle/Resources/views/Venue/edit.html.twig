@@ -22,7 +22,7 @@
             var place = autocomplete.getPlace();
             var pos = new google.maps.LatLng(place.geometry.location.lat(),
                     place.geometry.location.lng());
-            map.setCenter(pos);        
+            map.setCenter(pos);
             marker.setAnimation(google.maps.Animation.BOUNCE);
             marker.setPosition(pos);
             document.getElementById('dalilak_venuebundle_venue_address_latitude').value = place.geometry.location.lat().toFixed(6);
@@ -56,55 +56,122 @@
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     var pos = new google.maps.LatLng({{entity.addressLatitude}},
-                            {{entity.addressLongitude}});
-                                
-                    marker = new google.maps.Marker({
-                        position: pos,
-                        map: map, // handle of the map 
-                        draggable: true,
-                        animation: google.maps.Animation.DROP
+        {{entity.addressLongitude}});
+
+                        marker = new google.maps.Marker({
+                            position: pos,
+                            map: map, // handle of the map 
+                            draggable: true,
+                            animation: google.maps.Animation.DROP
+                        });
+
+                        // Add drag event listener to the map
+                        google.maps.event.addListener(marker, 'dragend', function(evt) {
+                            document.getElementById('dalilak_venuebundle_venue_address_latitude').value = evt.latLng.lat().toFixed(6);
+                            document.getElementById('dalilak_venuebundle_venue_address_longitude').value = evt.latLng.lng().toFixed(6);
+
+                            map.panTo(evt.latLng);
+                        });
+
+                        map.setCenter(pos);
+                    }, function() {
+                        handleNoGeolocation(true);
                     });
-
-                    // Add drag event listener to the map
-                    google.maps.event.addListener(marker, 'dragend', function(evt) {
-                        document.getElementById('dalilak_venuebundle_venue_address_latitude').value = evt.latLng.lat().toFixed(6);
-                        document.getElementById('dalilak_venuebundle_venue_address_longitude').value = evt.latLng.lng().toFixed(6);
-
-                        map.panTo(evt.latLng);
-                    });
-
-                    map.setCenter(pos);
-                }, function() {
-                    handleNoGeolocation(true);
-                });
-            } else {
-                // Browser doesn't support Geolocation
-                handleNoGeolocation(false);
-            }
-        }
-
-        /**
-         * Handling browsers which do not support Geolocation
-         */
-        function handleNoGeolocation(errorFlag) {
-            if (errorFlag) {
-                var content = 'Error: The Geolocation service failed.';
-            } else {
-                var content = 'Error: Your browser doesn\'t support geolocation.';
+                } else {
+                    // Browser doesn't support Geolocation
+                    handleNoGeolocation(false);
+                }
             }
 
-            var options = {
-                map: map,
-                position: new google.maps.LatLng(60, 105),
-                content: content
-            };
+            /**
+             * Handling browsers which do not support Geolocation
+             */
+            function handleNoGeolocation(errorFlag) {
+                if (errorFlag) {
+                    var content = 'Error: The Geolocation service failed.';
+                } else {
+                    var content = 'Error: Your browser doesn\'t support geolocation.';
+                }
 
-            var infowindow = new google.maps.InfoWindow(options);
-            map.setCenter(options.position);
+                var options = {
+                    map: map,
+                    position: new google.maps.LatLng(60, 105),
+                    content: content
+                };
+
+                var infowindow = new google.maps.InfoWindow(options);
+                map.setCenter(options.position);
+            }
+
+            // Add the map to DOM on page load
+            google.maps.event.addDomListener(window, 'load', map_init);
+    </script>
+    <script>
+        var $collectionHolder;
+
+        // setup an "add a tag" link
+        var $addTagLink = $('<a href="#" class="add_tag_link">Add branch</a>');
+        var $newLinkLi = $('<li></li>').append($addTagLink);
+
+        jQuery(document).ready(function() {
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('ul.barnches');
+
+            // add a delete link to all of the existing tag form li elements
+            $collectionHolder.find('li').each(function() {
+                addTagFormDeleteLink($(this));
+            });
+
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder, $newLinkLi);
+            });
+        });
+        function addTagForm($collectionHolder, $newLinkLi) {
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormLi = $('<li>Add Branch<br /></li>').append(newForm);
+
+            // Add delete branch
+            addTagFormDeleteLink($newFormLi);
+
+            $newLinkLi.before($newFormLi);
         }
 
-        // Add the map to DOM on page load
-        google.maps.event.addDomListener(window, 'load', map_init);
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormA = $('<a href="#">delete this branch</a>');
+            $tagFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $tagFormLi.remove();
+            });
+        }
     </script>
 {% endblock %}
 {% block styles %}{{parent()}}{% endblock %}
@@ -112,7 +179,7 @@
 {% block content -%}
     <h1>Venue edit</h1>
 
-    <form action="{{path('venue_update', {'id':app.request.attributes.get('id')})}}" {{ form_enctype(edit_form)}} style="height: 2400px;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
+    <form action="{{path('venue_update', {'id':app.request.attributes.get('id')})}}" {{ form_enctype(edit_form)}} style="min-height: 2400px;height: 100%;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
         <input type="hidden" name="_method" value="PUT">
         <div class="form-group">
             {{form_label(edit_form.name, 'Name')}}
@@ -180,6 +247,13 @@
             {{form_label(edit_form.categories, 'Categories')}}
             {{form_widget(edit_form.categories, {'attr':{'class':'form-control'}})}}
         </div>
+        
+        <ul class="barnches" data-prototype="{{ form_widget(edit_form.branches.vars.prototype)|e }}">
+            {% for branch in edit_form.branches %}
+                {{form_label(branch, 'Branch')}}
+                {{form_widget(branch)}}
+            {% endfor %}
+        </ul>
 
         {{form_widget(edit_form._token)}}
         <button class="btn btn-primary">Update</button>

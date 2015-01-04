@@ -7,11 +7,17 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Venue
  *
- * @ORM\Table()
+ * @author Alaa Attya <alaa.attya91@gmail.com> 
+ * @package Dalilak.VenueBundle.Entity
+ * @version 1.0
+ * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @category Entity
+ * 
+ * @ORM\Table(name="venues")
  * @ORM\Entity(repositoryClass="Dalilak\VenueBundle\Repository\VenueRepository")
  */
-class Venue
-{
+class Venue {
+
     /**
      * @var integer
      *
@@ -34,15 +40,6 @@ class Venue
      * @ORM\Column(name="name_ar", type="string", length=255)
      */
     private $nameAr;
-
-    /**
-     * @var string
-     *
-     * @ORM\ManyToOne(targetEntity="Dalilak\VenueBundle\Entity\Address")
-     * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
-     * 
-     */
-    private $address;
 
     /**
      * @var string
@@ -75,14 +72,14 @@ class Venue
     /**
      * @var string
      *
-     * @ORM\Column(name="opening_times", type="string", length=255)
+     * @ORM\Column(name="opening_times", type="text")
      */
     private $openingTimes;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="offers", type="string", length=255)
+     * @ORM\Column(name="offers", type="text")
      */
     private $offers;
 
@@ -104,20 +101,47 @@ class Venue
      * @var ArrayCollection 
      * 
      * @ORM\ManyToMany(targetEntity="Dalilak\VenueBundle\Entity\Category", inversedBy="venues")
-     * @ORM\JoinTable(name="sponsor_hashtag",
-     *      joinColumns={@ORM\JoinColumn(name="sponsor_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="hashtag_id", referencedColumnName="id")}
+     * @ORM\JoinTable(name="venues_categories",
+     *      joinColumns={@ORM\JoinColumn(name="venue_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")}
      * )
      * */
     private $categories;
-    
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="address_longitude", type="string", length=255)
+     */
+    private $address_longitude;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="address_latitude", type="string", length=255)
+     */
+    private $address_latitude;
+
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="address_text", type="text")
+     */
+    private $address_text;
+
+    /**
+     * @var Branch
+     * 
+     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Branch", mappedBy="venue")
+     */
+    private $branches;
+
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -127,8 +151,7 @@ class Venue
      * @param string $name
      * @return Venue
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -139,8 +162,7 @@ class Venue
      *
      * @return string 
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
@@ -150,8 +172,7 @@ class Venue
      * @param string $nameAr
      * @return Venue
      */
-    public function setNameAr($nameAr)
-    {
+    public function setNameAr($nameAr) {
         $this->nameAr = $nameAr;
 
         return $this;
@@ -162,32 +183,8 @@ class Venue
      *
      * @return string 
      */
-    public function getNameAr()
-    {
+    public function getNameAr() {
         return $this->nameAr;
-    }
-
-    /**
-     * Set address
-     *
-     * @param string $address
-     * @return Venue
-     */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return string 
-     */
-    public function getAddress()
-    {
-        return $this->address;
     }
 
     /**
@@ -196,8 +193,7 @@ class Venue
      * @param string $email
      * @return Venue
      */
-    public function setEmail($email)
-    {
+    public function setEmail($email) {
         $this->email = $email;
 
         return $this;
@@ -208,8 +204,7 @@ class Venue
      *
      * @return string 
      */
-    public function getEmail()
-    {
+    public function getEmail() {
         return $this->email;
     }
 
@@ -219,8 +214,7 @@ class Venue
      * @param string $facebook
      * @return Venue
      */
-    public function setFacebook($facebook)
-    {
+    public function setFacebook($facebook) {
         $this->facebook = $facebook;
 
         return $this;
@@ -231,8 +225,7 @@ class Venue
      *
      * @return string 
      */
-    public function getFacebook()
-    {
+    public function getFacebook() {
         return $this->facebook;
     }
 
@@ -242,8 +235,7 @@ class Venue
      * @param string $twitter
      * @return Venue
      */
-    public function setTwitter($twitter)
-    {
+    public function setTwitter($twitter) {
         $this->twitter = $twitter;
 
         return $this;
@@ -254,8 +246,7 @@ class Venue
      *
      * @return string 
      */
-    public function getTwitter()
-    {
+    public function getTwitter() {
         return $this->twitter;
     }
 
@@ -265,8 +256,7 @@ class Venue
      * @param string $website
      * @return Venue
      */
-    public function setWebsite($website)
-    {
+    public function setWebsite($website) {
         $this->website = $website;
 
         return $this;
@@ -277,8 +267,7 @@ class Venue
      *
      * @return string 
      */
-    public function getWebsite()
-    {
+    public function getWebsite() {
         return $this->website;
     }
 
@@ -288,8 +277,7 @@ class Venue
      * @param string $openingTimes
      * @return Venue
      */
-    public function setOpeningTimes($openingTimes)
-    {
+    public function setOpeningTimes($openingTimes) {
         $this->openingTimes = $openingTimes;
 
         return $this;
@@ -300,8 +288,7 @@ class Venue
      *
      * @return string 
      */
-    public function getOpeningTimes()
-    {
+    public function getOpeningTimes() {
         return $this->openingTimes;
     }
 
@@ -311,8 +298,7 @@ class Venue
      * @param string $offers
      * @return Venue
      */
-    public function setOffers($offers)
-    {
+    public function setOffers($offers) {
         $this->offers = $offers;
 
         return $this;
@@ -323,8 +309,7 @@ class Venue
      *
      * @return string 
      */
-    public function getOffers()
-    {
+    public function getOffers() {
         return $this->offers;
     }
 
@@ -334,8 +319,7 @@ class Venue
      * @param string $services
      * @return Venue
      */
-    public function setServices($services)
-    {
+    public function setServices($services) {
         $this->services = $services;
 
         return $this;
@@ -346,8 +330,7 @@ class Venue
      *
      * @return string 
      */
-    public function getServices()
-    {
+    public function getServices() {
         return $this->services;
     }
 
@@ -357,8 +340,7 @@ class Venue
      * @param string $phone
      * @return Venue
      */
-    public function setPhone($phone)
-    {
+    public function setPhone($phone) {
         $this->phone = $phone;
 
         return $this;
@@ -369,8 +351,198 @@ class Venue
      *
      * @return string 
      */
-    public function getPhone()
-    {
+    public function getPhone() {
         return $this->phone;
     }
+
+    /**
+     * Constructor
+     */
+    public function __construct() {
+        $this->phones = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add phones
+     *
+     * @param \Dalilak\VenueBundle\Entity\VenuePhone $phones
+     * @return Venue
+     */
+    public function addPhone(\Dalilak\VenueBundle\Entity\VenuePhone $phones) {
+        $this->phones[] = $phones;
+
+        return $this;
+    }
+
+    /**
+     * Remove phones
+     *
+     * @param \Dalilak\VenueBundle\Entity\VenuePhone $phones
+     */
+    public function removePhone(\Dalilak\VenueBundle\Entity\VenuePhone $phones) {
+        $this->phones->removeElement($phones);
+    }
+
+    /**
+     * Get phones
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPhones() {
+        return $this->phones;
+    }
+
+    /**
+     * Return phones as array
+     * 
+     * @return array
+     */
+    public function getPhonesAsArray() {
+        $phones = array();
+        foreach ($this->phones as $phone) {
+            $phone[] = $phone->toArray();
+        }
+        return $phones;
+    }
+
+    /**
+     * Add categories
+     *
+     * @param \Dalilak\VenueBundle\Entity\Category $categories
+     * @return Venue
+     */
+    public function addCategory(\Dalilak\VenueBundle\Entity\Category $categories) {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \Dalilak\VenueBundle\Entity\Category $categories
+     */
+    public function removeCategory(\Dalilak\VenueBundle\Entity\Category $categories) {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategories() {
+        return $this->categories;
+    }
+
+    /**
+     * Get categories as Array
+     * 
+     * @return array
+     */
+    public function getCategoriesAsArray() {
+        $categories = array();
+        foreach ($this->categories as $category) {
+            $categories[] = $category->toArray();
+        }
+        return $categories;
+    }
+
+    /**
+     * Set longitude
+     *
+     * @param string $longitude
+     * @return Address
+     */
+    public function setAddressLongitude($longitude) {
+        $this->address_longitude = $longitude;
+
+        return $this;
+    }
+
+    /**
+     * Get longitude
+     *
+     * @return string 
+     */
+    public function getAddressLongitude() {
+        return $this->address_longitude;
+    }
+
+    /**
+     * Set latitude
+     *
+     * @param string $latitude
+     * @return Address
+     */
+    public function setAddressLatitude($latitude) {
+        $this->address_latitude = $latitude;
+
+        return $this;
+    }
+
+    /**
+     * Get latitude
+     *
+     * @return string 
+     */
+    public function getAddressLatitude() {
+        return $this->address_latitude;
+    }
+
+    /**
+     * Set text
+     *
+     * @param string $text
+     * @return Address
+     */
+    public function setAddressText($text) {
+        $this->address_text = $text;
+
+        return $this;
+    }
+
+    /**
+     * Get text
+     *
+     * @return string 
+     */
+    public function getAddressText() {
+        return $this->address_text;
+    }
+
+    public function __toString() {
+        return $this->name;
+    }
+
+    /**
+     * Retuen array representation of the current object
+     * @access public
+     * 
+     * @return array
+     */
+    public function toArray() {
+        $venue = array(
+            'id' => $this->id,
+            'name' => $this->name,
+            'name_ar' => $this->nameAr,
+            'email' => $this->email,
+            'website' => $this->website,
+            'facebook' => $this->facebook,
+            'twitter' => $this->twitter,
+            'offers' => $this->offers,
+            'address' => array(
+                'text' => $this->getAddressText(),
+                'latitude' => $this->getAddressLatitude(),
+                'logitude' => $this->getAddressLongitude()
+            ),
+            'opening_times' => $this->openingTimes,
+            'services' => $this->services,
+            'categories' => $this->getCategoriesAsArray(),
+            'phones' => $this->getPhonesAsArray()
+        );
+        return $venue;
+    }
+
 }

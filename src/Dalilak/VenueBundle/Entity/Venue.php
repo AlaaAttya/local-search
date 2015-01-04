@@ -130,6 +130,14 @@ class Venue {
     private $address_text;
 
     /**
+     * @var string
+     *
+     * 
+     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Branch", mappedBy="venue" ,cascade={"persist"})
+     */
+    private $branches;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -354,6 +362,7 @@ class Venue {
     public function __construct() {
         $this->phones = new \Doctrine\Common\Collections\ArrayCollection();
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->branches = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -394,7 +403,7 @@ class Venue {
     public function getPhonesAsArray() {
         $phones = array();
         foreach ($this->phones as $phone) {
-            $phone[] = $phone->toArray();
+            $phones[] = $phone->toArray();
         }
         return $phones;
     }
@@ -533,9 +542,53 @@ class Venue {
             'opening_times' => $this->openingTimes,
             'services' => $this->services,
             'categories' => $this->getCategoriesAsArray(),
-            'phones' => $this->getPhonesAsArray()
+            'phones' => $this->getPhonesAsArray(),
+            'branches' => $this->getBranchesAsArray()
         );
         return $venue;
+    }
+
+    /**
+     * Add branches
+     *
+     * @param \Dalilak\VenueBundle\Entity\Branch $branches
+     * @return Venue
+     */
+    public function addBranch(\Dalilak\VenueBundle\Entity\Branch $branches) {
+        $this->branches[] = $branches;
+
+        return $this;
+    }
+
+    /**
+     * Remove branches
+     *
+     * @param \Dalilak\VenueBundle\Entity\Branch $branches
+     */
+    public function removeBranch(\Dalilak\VenueBundle\Entity\Branch $branches) {
+        $this->branches->removeElement($branches);
+    }
+
+    /**
+     * Get branches
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBranches() {
+        return $this->branches;
+    }
+
+    /**
+     * Return branches as array
+     * 
+     * @return array
+     */
+    public function getBranchesAsArray() {
+        $branches = array();
+        foreach ($this->branches as $branch) {
+            $branches[] = $branch->toArray();
+        }
+        return $branches;
     }
 
 }

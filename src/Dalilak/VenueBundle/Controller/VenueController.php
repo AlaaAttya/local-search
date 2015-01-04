@@ -49,8 +49,13 @@ class VenueController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
+            foreach($entity->getBranches() as $branch) {
+                $branch->setVenue($entity);
+                $em->persist($branch);
+            }
             $em->flush();
 
             return $this->redirect($this->generateUrl('venue_show', array('id' => $entity->getId())));
@@ -191,6 +196,10 @@ class VenueController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            foreach($entity->getBranches() as $branch) {
+                $branch->setVenue($entity);
+                $em->persist($branch);
+            }
             $em->flush();
 
             return $this->redirect($this->generateUrl('venue_edit', array('id' => $id)));
