@@ -1,0 +1,55 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Menu list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Item_name</th>
+                <th>Ingerdients</th>
+                <th>Size1</th>
+                <th>Size1_price</th>
+                <th>Size2</th>
+                <th>Size2_price</th>
+                <th>Size3</th>
+                <th>Size3_price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('menu_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.itemname }}</td>
+                <td>{{ entity.ingerdients }}</td>
+                <td>{{ entity.size1 }}</td>
+                <td>{{ entity.size1price }}</td>
+                <td>{{ entity.size2 }}</td>
+                <td>{{ entity.size2price }}</td>
+                <td>{{ entity.size3 }}</td>
+                <td>{{ entity.size3price }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('menu_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('menu_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('menu_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

@@ -56,6 +56,12 @@ class VenueController extends Controller
                 $branch->setVenue($entity);
                 $em->persist($branch);
             }
+
+            foreach($entity->getMenus() as $menu) {
+                $menu->setVenue($entity);
+                $em->persist($menu);
+            }
+
             $em->flush();
 
             return $this->redirect($this->generateUrl('venue_show', array('id' => $entity->getId())));
@@ -188,10 +194,16 @@ class VenueController extends Controller
         $entity = $em->getRepository('DalilakVenueBundle:Venue')->find($id);
 
         $originalBranches = new \Doctrine\Common\Collections\ArrayCollection();
+        $originalMenus = new \Doctrine\Common\Collections\ArrayCollection();
 
-        // Create an ArrayCollection of the current Tag objects in the database
+        // Create an ArrayCollection of the current branch objects in the database
         foreach ($entity->getBranches() as $branch) {
             $originalBranches->add($branch);
+        }
+
+        // Create an ArrayCollection of the current menu objects in the database
+        foreach ($entity->getMenus() as $menu) {
+            $originalMenus->add($menu);
         }
 
         if (!$entity) {
@@ -203,6 +215,23 @@ class VenueController extends Controller
         $editForm->handleRequest($request);
         
         if ($editForm->isValid()) {
+            
+            // Fixing the null venu issue
+            // for the new added branches
+            foreach ($entity->getBranches() as $branch) {
+                $branch->setVenue($entity);
+                $em->persist($branch);              
+            }
+
+            // Fixing the null venu issue
+            // for the new added menus
+            foreach ($entity->getMenus() as $menu) {
+                $menu->setVenue($entity);
+                $em->persist($menu);              
+            }
+
+            // Updating the currnt branches
+            // attached to the venue
             foreach($originalBranches as $branch) {
                 if (false === $entity->getBranches()->contains($branch)) {
                     $branch->setVenue(null);
@@ -211,6 +240,16 @@ class VenueController extends Controller
                     $em->persist($branch);
                 }
             }
+
+            foreach($originalMenus as $menu) {
+                if (false === $entity->getMenus()->contains($menu)) {
+                    $menu->setVenue(null);
+                } else {
+                    $menu->setVenue($entity);
+                    $em->persist($menu);
+                }
+            }
+            $em->persist($entity);
             $em->flush();
 
             return $this->redirect($this->generateUrl('venue_edit', array('id' => $id)));

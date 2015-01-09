@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Dalilak\VenueBundle\Form\BranchType;
+use Dalilak\VenueBundle\Form\MenuType;
 
 /**
  * Venue Form
@@ -46,6 +47,17 @@ class VenueType extends AbstractType {
                     'prototype' => true,
                     'options' => array(
                         'data_class' => 'Dalilak\VenueBundle\Entity\Branch'
+                    )
+                        )
+                )
+                ->add('menus', 'collection', array(
+                    'type' => new MenuType(),
+                    'allow_add' => true,
+                    'by_reference' => false,
+                    'allow_delete' => true,
+                    'prototype' => true,
+                    'options' => array(
+                        'data_class' => 'Dalilak\VenueBundle\Entity\Menu'
                     )
                         )
                 )

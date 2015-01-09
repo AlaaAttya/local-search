@@ -115,31 +115,57 @@
         var $addTagLink = $('<a href="#" class="add_tag_link">Add branch</a>');
         var $newLinkLi = $('<li></li>').append($addTagLink);
 
+        // setup an "add a menu" link
+        var $addMenuLink = $('<a href="#" class="add_menu_link">Add menu</a>');
+        var $newMenuLi = $('<li></li>').append($addMenuLink);
+
         jQuery(document).ready(function() {
             // Get the ul that holds the collection of tags
             $collectionHolder = $('ul.barnches');
+            $collectionMenuHolder = $('ul.menus');
 
-            // add a delete link to all of the existing tag form li elements
+            // add a delete link to all of the existing tag form li elements (branches)
             $collectionHolder.find('li').each(function() {
-                addTagFormDeleteLink($(this));
+                addTagFormDeleteLink($(this), 'branch');
+            });
+
+            // add a delete link to all of the existing tag form li elements (menus)
+            $collectionMenuHolder.find('li').each(function() {
+                addTagFormDeleteLink($(this), 'menu');
             });
 
             // add the "add a tag" anchor and li to the tags ul
             $collectionHolder.append($newLinkLi);
 
+            // add the "add a menu" anchor and li to the tags ul
+            $collectionMenuHolder.append($newMenuLi );
+
             // count the current form inputs we have (e.g. 2), use that as the new
             // index when inserting a new item (e.g. 2)
             $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionMenuHolder.data('index', $collectionMenuHolder.find(':input').length);
 
             $addTagLink.on('click', function(e) {
                 // prevent the link from creating a "#" on the URL
                 e.preventDefault();
 
                 // add a new tag form (see next code block)
-                addTagForm($collectionHolder, $newLinkLi);
+                addTagForm($collectionHolder, $newLinkLi, "branch");
+            });
+
+            $addMenuLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm($collectionMenuHolder, $newMenuLi, "menu");
             });
         });
-        function addTagForm($collectionHolder, $newLinkLi) {
+
+        function addTagForm($collectionHolder, $newLinkLi, $text) {
             // Get the data-prototype explained earlier
             var prototype = $collectionHolder.data('prototype');
 
@@ -152,18 +178,18 @@
 
             // increase the index with one for the next item
             $collectionHolder.data('index', index + 1);
-            
+
             // Display the form in the page in an li, before the "Add a tag" link li
-            var $newFormLi = $('<li>Add Branch<br /></li>').append(newForm);
-            
+            var $newFormLi = $('<li>Add ' + $text + '<br /></li>').append(newForm);
+
             // Add delete branch
-            addTagFormDeleteLink($newFormLi);
-            
+            addTagFormDeleteLink($newFormLi, $text);
+
             $newLinkLi.before($newFormLi);
         }
 
-        function addTagFormDeleteLink($tagFormLi) {
-            var $removeFormA = $('<a href="#">delete this branch</a>');
+        function addTagFormDeleteLink($tagFormLi, $text) {
+            var $removeFormA = $('<a href="#">delete this ' + $text + '</a>');
             $tagFormLi.append($removeFormA);
 
             $removeFormA.on('click', function(e) {
@@ -181,7 +207,7 @@
 {% block content -%}
     <h1>Venue creation</h1>
 
-    <form action="{{path('venue_create')}}" {{ form_enctype(form)}} style="height: 2400px;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
+    <form action="{{path('venue_create')}}" {{ form_enctype(form)}} style="min-height: 2400px;height: 100%;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
         <div class="form-group">
             {{form_label(form.name, 'Name')}}
             {{form_widget(form.name, {'attr':{'class':'form-control'}})}}
@@ -250,6 +276,10 @@
 
         <div>
             <ul class="barnches" data-prototype="{{ form_widget(form.branches.vars.prototype)|e }}">
+
+            </ul>
+            <hr />
+            <ul class="menus" data-prototype="{{ form_widget(form.menus.vars.prototype)|e }}">
 
             </ul>
         </div>
