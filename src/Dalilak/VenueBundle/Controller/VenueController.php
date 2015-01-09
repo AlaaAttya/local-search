@@ -187,6 +187,13 @@ class VenueController extends Controller
 
         $entity = $em->getRepository('DalilakVenueBundle:Venue')->find($id);
 
+        $originalBranches = new \Doctrine\Common\Collections\ArrayCollection();
+
+        // Create an ArrayCollection of the current Tag objects in the database
+        foreach ($entity->getBranches() as $branch) {
+            $originalBranches->add($branch);
+        }
+
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Venue entity.');
         }
@@ -194,11 +201,15 @@ class VenueController extends Controller
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
-
+        
         if ($editForm->isValid()) {
-            foreach($entity->getBranches() as $branch) {
-                $branch->setVenue($entity);
-                $em->persist($branch);
+            foreach($originalBranches as $branch) {
+                if (false === $entity->getBranches()->contains($branch)) {
+                    $branch->setVenue(null);
+                } else {
+                    $branch->setVenue($entity);
+                    $em->persist($branch);
+                }
             }
             $em->flush();
 

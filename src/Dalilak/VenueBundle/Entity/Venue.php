@@ -136,6 +136,14 @@ class Venue {
      * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Branch", mappedBy="venue" ,cascade={"persist"})
      */
     private $branches;
+    
+    /**
+     * @var string
+     *
+     * 
+     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Menu", mappedBy="venue" ,cascade={"persist"})
+     */
+    private $menus;
 
     /**
      * Get id
@@ -538,13 +546,13 @@ class Venue {
                 'text' => $this->getAddressText(),
                 'latitude' => $this->getAddressLatitude(),
                 'logitude' => $this->getAddressLongitude()
-            ),
+                ),
             'opening_times' => $this->openingTimes,
             'services' => $this->services,
             'categories' => $this->getCategoriesAsArray(),
             'phones' => $this->getPhonesAsArray(),
             'branches' => $this->getBranchesAsArray()
-        );
+            );
         return $venue;
     }
 
@@ -591,4 +599,41 @@ class Venue {
         return $branches;
     }
 
+
+    /**
+     * Add menus
+     *
+     * @param \Dalilak\VenueBundle\Entity\Menu $menus
+     * @return Venue
+     */
+    public function addMenu(\Dalilak\VenueBundle\Entity\Menu $menus)
+    {
+        $this->menus[] = $menus;
+
+        return $this;
+    }
+
+    /**
+     * Remove menus
+     *
+     * @param \Dalilak\VenueBundle\Entity\Menu $menus
+     */
+    public function removeMenu(\Dalilak\VenueBundle\Entity\Menu $menus)
+    {
+        $this->menus->removeElement($menus);
+    }
+
+    /**
+     * Get menus
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMenus()
+    {
+        return $this->menus;
+    }
+
+    public function removeAllBranches(){
+        $this->branches = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 }

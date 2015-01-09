@@ -49,6 +49,13 @@ class Offer {
     private $image;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="vendor", type="string", length=255)
+     */
+    private $vendor;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -118,6 +125,40 @@ class Offer {
      */
     public function getImage() {
         return $this->image;
+    }
+
+    /**
+     * Set vendor
+     *
+     * @param string $vendor
+     * @return Offer
+     */
+    public function setVendor($vendor) {
+        $this->vendor = $vendor;
+
+        return $this;
+    }
+
+    /**
+     * Get vendor
+     *
+     * @return string 
+     */
+    public function getVendor() {
+        return $this->vendor;
+    }
+
+    /**
+     * populate an object to array
+     */
+    public function toArray() {
+        return array(
+            'id' => $this->getId(),
+            'title' => $this->getTitle(),
+            'vendor' => $this->getVendor(),
+            'valid_date' => $this->getValidDate(),
+            'image' => $this->getImage()
+        );
     }
 
 }

@@ -68,27 +68,70 @@ class APIController extends BaseController {
                             )
             );
     }
-    
+
     /**
      * Get all categories
      * 
      * @Route("/category")
      */
-    public function getAllCategoriesAction(){
+    public function getAllCategoriesAction() {
         $categories = $this->getDoctrine()->getRepository('DalilakVenueBundle:Category')->findAll();
         $categoriesArray = $this->getAppService('util')->entitiesToArray($categories);
         return $this->prepareResponse($categoriesArray);
     }
-    
+
     /**
      * Get all public services numbers
      * 
      * @Route("/public-numbers")
      */
-    public function getPublicServicesAction(){
+    public function getPublicServicesAction() {
         $numbers = $this->getDoctrine()->getRepository('DalilakPublicServicesBundle:Phone')->findAll();
         $numbersArray = $this->getAppService('util')->entitiesToArray($numbers);
         return $this->prepareResponse($numbersArray);
+    }
+
+    /**
+     * Get all public services numbers
+     * 
+     * @Route("/offers")
+     */
+    public function getAllOffers() {
+        $offers = $this->getDoctrine()
+                ->getRepository('DalilakVenueBundle:Offer')
+                ->findAll();
+        $offersArray = $this->getAppService('util')->entitiesToArray($offers);
+        return $this->prepareResponse($offersArray);
+    }
+
+    /**
+     * Get venue menus
+     * 
+     * @Route("/venue/{id}/menus")
+     */
+    public function getVenueMenus($id) {
+        $menus = $this->getDoctrine()
+                ->getRepository('DalilakVenueBundle:Menu')
+                ->findBy(array('venue' => $id));
+        $menusArray = $this->getAppService('util')->entitiesToArray($menus);
+        return $this->prepareResponse($menusArray);
+    }
+
+    /**
+     * Get venue branches
+     * 
+     * @Route("/venue/{id}/branches")
+     */
+    public function getVenueBranches($id) {
+        $branchs = $this->getDoctrine()
+                ->getRepository('DalilakVenueBundle:Branch')
+                ->findBy(array('venue' => $id));
+        $branchsArray = $this->getAppService('util')->entitiesToArray($branchs);
+        return $this->prepareResponse($branchsArray);
+    }
+
+    public function getVenueOffers($id) {
+        
     }
 
 }

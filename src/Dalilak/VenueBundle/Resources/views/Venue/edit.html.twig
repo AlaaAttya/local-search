@@ -250,8 +250,10 @@
         
         <ul class="barnches" data-prototype="{{ form_widget(edit_form.branches.vars.prototype)|e }}">
             {% for branch in edit_form.branches %}
+            <li>
                 {{form_label(branch, 'Branch')}}
                 {{form_widget(branch)}}
+            </li>
             {% endfor %}
         </ul>
 
