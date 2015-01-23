@@ -166,7 +166,7 @@ class APIController extends BaseController {
     /**
      * Get album images
      * 
-     * @Route("/ablum/images/{album_id}")
+     * @Route("/album/images/{album_id}")
      */
     public function getImagesByAlbumId($album_id){
         $request = $this->getRequest();
@@ -175,6 +175,20 @@ class APIController extends BaseController {
                 ->findBy(array('album' => $album_id));
         $imagesArray = $this->getAppService('util')->entitiesToArray($images, array('request' => $request));
         return $this->prepareResponse($imagesArray);
+    }
+
+    /**
+     * Get venue albums
+     *
+     * @Route("/venue-albums/{venue_id}")
+     */
+    public function getVenueAlbums($venue_id){
+        $request = $this->getRequest();
+        $albums = $this->getDoctrine()
+                ->getRepository('DalilakVenueBundle:Album')
+                ->findBy(array('venue' => $venue_id));
+        $albumsArray = $this->getAppService('util')->entitiesToArray($albums, array('request' => $request));
+        return $this->prepareResponse($albumsArray);
     }
 
 }
