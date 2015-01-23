@@ -30,16 +30,9 @@ class UtilService {
      */
     public function entitiesToArray($entityArray, $params = array()) {
         $resultsArray = array();
-        // Return venue object or not
-        $has_venue = true;
-        if(!isset($params['has_venue']))
-            $has_venue = false;
         
         foreach ($entityArray as $entity) {
-            if(isset($params['lang']))
-                $resultsArray[] = $entity->toArray($has_venue, $params['lang']);
-            else 
-                $resultsArray[] = $entity->toArray();
+                $resultsArray[] = $entity->toArray($params);
         }
 
         return $resultsArray;

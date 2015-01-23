@@ -143,28 +143,34 @@ class Offer {
         return $this;
     }
 
+    protected function __getOffersUploadPath(){
+        return '/uploads/offers/';
+    }
+
     /**
      * Get image
      *
      * @return string 
      */
-    public function getImage() {
-        return $this->image;
+    public function getImage($request) {
+        $image = $this->__getOffersUploadPath() . $this->image;
+        $image_full_url = str_replace('/app_dev.php', '', $request->getUriForPath($image));
+        return $image_full_url;
     }
 
     /**
      * populate an object to array
      */
-    public function toArray($hasVenue = false, $lang = "en") {
+    public function toArray($params) {
         $offerArray = array(
             'id' => $this->getId(),
-            'title' => $this->getTitle($lang),
-            'description' => $this->getDescription($lang),
+            'title' => $this->getTitle($params['lang']),
+            'description' => $this->getDescription($params['lang']),
             'valid_date' => $this->getValidDate(),
-            'image' => $this->getImage()
+            'image' => $this->getImage($params['request'])
         );
         
-        if($hasVenue){
+        if(isset($params['has_venue'])){
             $offerArray['vendor'] = $this->getVendor()->toArray();
         }
         return $offerArray;

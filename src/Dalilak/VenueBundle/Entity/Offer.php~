@@ -101,9 +101,12 @@ class Offer {
     /**
      * Get title
      *
+     * @param   string $lang
      * @return string 
      */
-    public function getTitle() {
+    public function getTitle($lang) {
+        if($lang == 'ar')
+            return $this->title_ar;
         return $this->title;
     }
 
@@ -152,13 +155,15 @@ class Offer {
     /**
      * populate an object to array
      */
-    public function toArray($hasVenue = false) {
+    public function toArray($hasVenue = false, $lang = "en") {
         $offerArray = array(
             'id' => $this->getId(),
-            'title' => $this->getTitle(),
+            'title' => $this->getTitle($lang),
+            'description' => $this->getDescription($lang),
             'valid_date' => $this->getValidDate(),
             'image' => $this->getImage()
         );
+        
         if($hasVenue){
             $offerArray['vendor'] = $this->getVendor()->toArray();
         }
@@ -185,5 +190,71 @@ class Offer {
      */
     public function getVendor() {
         return $this->vendor;
+    }
+
+    /**
+     * Set title_ar
+     *
+     * @param string $titleAr
+     * @return Offer
+     */
+    public function setTitleAr($titleAr) {
+        $this->title_ar = $titleAr;
+
+        return $this;
+    }
+
+    /**
+     * Get title_ar
+     *
+     * @return string 
+     */
+    public function getTitleAr() {
+        return $this->title_ar;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Offer
+     */
+    public function setDescription($description) {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @param   string $lang
+     * @return string 
+     */
+    public function getDescription($lang) {
+        if($lang == 'ar')
+            return $this->description_ar;
+        return $this->description;
+    }
+
+    /**
+     * Set description_ar
+     *
+     * @param string $descriptionAr
+     * @return Offer
+     */
+    public function setDescriptionAr($descriptionAr) {
+        $this->description_ar = $descriptionAr;
+
+        return $this;
+    }
+
+    /**
+     * Get description_ar
+     *
+     * @return string 
+     */
+    public function getDescriptionAr() {
+        return $this->description_ar;
     }
 }

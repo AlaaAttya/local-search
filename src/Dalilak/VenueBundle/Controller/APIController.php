@@ -21,10 +21,11 @@ class APIController extends BaseController {
      * @Route("/venues/{lang}")
      */
     public function getVenue($lang = null) {
+        $request = $this->getRequest();
         $venues = $this->getDoctrine()->getRepository("DalilakVenueBundle:Venue")->findAll();
         $venuesArray = array();
         foreach ($venues as $venue) {
-            $venuesArray[] = $venue->toArray($lang);
+            $venuesArray[] = $venue->toArray(array('lang' => $lang, 'request' => $request));
         }
         return $this->prepareResponse($venuesArray);
     }
@@ -32,20 +33,22 @@ class APIController extends BaseController {
     /**
      * Get venue by category alias
      * 
-     * @Route("/venue/category/{category_alias}/{limit}/{last_id}")
+     * @Route("/venue/category/{category_alias}/{limit}/{last_id}/{lang}")
      */
-    public function getByCategory($category_alias, $limit = 5, $last_id = null) {
+    public function getByCategory($category_alias, $limit = 5, $last_id = null, $lang = 'en') {
+        $request = $this->getRequest();
         $venues = $this->getDoctrine()->getRepository('DalilakVenueBundle:Venue')->getByCategoryAlias($category_alias, $limit, $last_id);
-        $venuesArray = $this->getAppService('util')->entitiesToArray($venues);
+        $venuesArray = $this->getAppService('util')->entitiesToArray($venues, array('lang' => $lang, 'request' => $request));
         return $this->prepareResponse($venuesArray);
     }
 
     /**
-     * @Route("/venue/name/{name}/{limit}/{last_id}")
+     * @Route("/venue/name/{name}/{limit}/{last_id}/{lang}")
      */
-    public function getByName($name, $limit = 5, $last_id = null) {
+    public function getByName($name, $limit = 5, $last_id = null, $lang = 'en') {
+        $request = $this->getRequest();
         $venues = $this->getDoctrine()->getRepository('DalilakVenueBundle:Venue')->findByName($name, $limit, $last_id);
-        $venuesArray = $this->getAppService('util')->entitiesToArray($venues);
+        $venuesArray = $this->getAppService('util')->entitiesToArray($venues, array('lang' => $lang, 'request' => $request));
         return $this->prepareResponse($venuesArray);
     }
 
@@ -55,9 +58,10 @@ class APIController extends BaseController {
      * @Route("/venue/{id}/{lang}")
      */
     public function getById($id, $lang = null) {
+        $request = $this->getRequest();
         $venue = $this->getDoctrine()->getRepository('DalilakVenueBundle:Venue')->find($id);
         if (count($venue) && isset($venue))
-            return $this->prepareResponse($venue->toArray($lang));
+            return $this->prepareResponse($venue->toArray(array('lang' => $lang, 'request' => $request)));
         else
             return $this->prepareResponse(
                 array(
@@ -133,13 +137,14 @@ class APIController extends BaseController {
     /**
      * Get venue branches
      * 
-     * @Route("/venue/{venue_id}/offers")
+     * @Route("/venue-offers/{venue_id}/{lang}")
      */
-    public function getVenueOffers($venue_id) {
+    public function getVenueOffers($venue_id, $lang = 'en') {
+        $request = $this->getRequest();
         $offers = $this->getDoctrine()
         ->getRepository('DalilakVenueBundle:Offer')
         ->findBy(array('vendor' => $venue_id));
-        $offersArray = $this->getAppService('util')->entitiesToArray($offers);
+        $offersArray = $this->getAppService('util')->entitiesToArray($offers, array('lang' => $lang, 'request' => $request));
         return $this->prepareResponse($offersArray);
     }
 
@@ -149,11 +154,12 @@ class APIController extends BaseController {
      * @param   int $id
      * @Route("/offer/{id}/{lang}")
      */
-    public function getOfferDetails($id, $lang = null) {
+    public function getOfferDetails($id, $lang = 'en') {
+        $request = $this->getRequest();
         $offer = $this->getDoctrine()
                 ->getRepository('DalilakVenueBundle:Offer')
                 ->findById($id);
-        $offerArray = $this->getAppService('util')->entitiesToArray($offer, array('lang' => $lang));
+        $offerArray = $this->getAppService('util')->entitiesToArray($offer, array('lang' => $lang, 'request' => $request));
         return $this->prepareResponse($offerArray);
     }
 

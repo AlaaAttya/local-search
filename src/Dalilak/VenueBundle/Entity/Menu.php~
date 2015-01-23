@@ -76,12 +76,12 @@ class Menu {
      * @ORM\Column(name="size3_price", type="string", length=255)
      */
     private $size3_price;
-    
+
     /**
-   * 
-   * @ORM\ManyToOne(targetEntity="Dalilak\VenueBundle\Entity\Venue",inversedBy="menus")
-   * @ORM\JoinColumn(referencedColumnName="id")
-   */
+     * 
+     * @ORM\ManyToOne(targetEntity="Dalilak\VenueBundle\Entity\Venue",inversedBy="menus")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
     private $venue;
 
     /**
@@ -94,35 +94,12 @@ class Menu {
     }
 
     /**
-     * Set items
-     *
-     * @param string $items
-     * @return Menu
-     */
-    public function setItems($items) {
-        $this->items = $items;
-
-        return $this;
-    }
-
-    /**
-     * Get items
-     *
-     * @return string 
-     */
-    public function getItems() {
-        return $this->items;
-    }
-
-
-    /**
      * Set item_name
      *
      * @param string $itemName
      * @return Menu
      */
-    public function setItemName($itemName)
-    {
+    public function setItemName($itemName) {
         $this->item_name = $itemName;
 
         return $this;
@@ -133,8 +110,7 @@ class Menu {
      *
      * @return string 
      */
-    public function getItemName()
-    {
+    public function getItemName() {
         return $this->item_name;
     }
 
@@ -144,8 +120,7 @@ class Menu {
      * @param string $ingerdients
      * @return Menu
      */
-    public function setIngerdients($ingerdients)
-    {
+    public function setIngerdients($ingerdients) {
         $this->ingerdients = $ingerdients;
 
         return $this;
@@ -156,8 +131,7 @@ class Menu {
      *
      * @return string 
      */
-    public function getIngerdients()
-    {
+    public function getIngerdients() {
         return $this->ingerdients;
     }
 
@@ -167,8 +141,7 @@ class Menu {
      * @param string $size1
      * @return Menu
      */
-    public function setSize1($size1)
-    {
+    public function setSize1($size1) {
         $this->size1 = $size1;
 
         return $this;
@@ -179,8 +152,7 @@ class Menu {
      *
      * @return string 
      */
-    public function getSize1()
-    {
+    public function getSize1() {
         return $this->size1;
     }
 
@@ -190,8 +162,7 @@ class Menu {
      * @param string $size1Price
      * @return Menu
      */
-    public function setSize1Price($size1Price)
-    {
+    public function setSize1Price($size1Price) {
         $this->size1_price = $size1Price;
 
         return $this;
@@ -202,8 +173,7 @@ class Menu {
      *
      * @return string 
      */
-    public function getSize1Price()
-    {
+    public function getSize1Price() {
         return $this->size1_price;
     }
 
@@ -213,8 +183,7 @@ class Menu {
      * @param string $size2
      * @return Menu
      */
-    public function setSize2($size2)
-    {
+    public function setSize2($size2) {
         $this->size2 = $size2;
 
         return $this;
@@ -225,8 +194,7 @@ class Menu {
      *
      * @return string 
      */
-    public function getSize2()
-    {
+    public function getSize2() {
         return $this->size2;
     }
 
@@ -236,8 +204,7 @@ class Menu {
      * @param string $size2Price
      * @return Menu
      */
-    public function setSize2Price($size2Price)
-    {
+    public function setSize2Price($size2Price) {
         $this->size2_price = $size2Price;
 
         return $this;
@@ -248,8 +215,7 @@ class Menu {
      *
      * @return string 
      */
-    public function getSize2Price()
-    {
+    public function getSize2Price() {
         return $this->size2_price;
     }
 
@@ -259,8 +225,7 @@ class Menu {
      * @param string $size3
      * @return Menu
      */
-    public function setSize3($size3)
-    {
+    public function setSize3($size3) {
         $this->size3 = $size3;
 
         return $this;
@@ -271,8 +236,7 @@ class Menu {
      *
      * @return string 
      */
-    public function getSize3()
-    {
+    public function getSize3() {
         return $this->size3;
     }
 
@@ -282,8 +246,7 @@ class Menu {
      * @param string $size3Price
      * @return Menu
      */
-    public function setSize3Price($size3Price)
-    {
+    public function setSize3Price($size3Price) {
         $this->size3_price = $size3Price;
 
         return $this;
@@ -294,8 +257,7 @@ class Menu {
      *
      * @return string 
      */
-    public function getSize3Price()
-    {
+    public function getSize3Price() {
         return $this->size3_price;
     }
 
@@ -305,8 +267,7 @@ class Menu {
      * @param \Dalilak\VenueBundle\Entity\Venue $venue
      * @return Menu
      */
-    public function setVenue(\Dalilak\VenueBundle\Entity\Venue $venue = null)
-    {
+    public function setVenue(\Dalilak\VenueBundle\Entity\Venue $venue = null) {
         $this->venue = $venue;
 
         return $this;
@@ -317,8 +278,33 @@ class Menu {
      *
      * @return \Dalilak\VenueBundle\Entity\Venue 
      */
-    public function getVenue()
-    {
+    public function getVenue() {
         return $this->venue;
     }
+
+    /**
+     * Polulate menu object as an array
+     * 
+     * @return array
+     */
+    public function toArray($hasVenue = false) {
+        $menuArray = array(
+            'id' => $this->getId(),
+            'item_name' => $this->getItemName(),
+            'ingredients' => $this->getIngerdients(),
+            'size1' => $this->getSize1(),
+            'size1_price' => $this->getSize1Price(),
+            'size2' => $this->getSize2(),
+            'size2_price' => $this->getSize2Price(),
+            'size3' => $this->getSize3(),
+            'size3_price' => $this->getSize3Price()
+        );
+        
+        if($hasVenue){
+            $menuArray['venue'] = $this->getVenue()->toArray();
+        }
+        
+        return $menuArray;
+    }
+
 }

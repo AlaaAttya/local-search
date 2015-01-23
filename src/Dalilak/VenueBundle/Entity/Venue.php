@@ -177,6 +177,13 @@ class Venue {
     private $offers;
 
     /**
+     * @var string
+     * 
+     * @ORM\Column(name="logo", type="text", nullable=true)
+     */
+    private $logo;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -558,22 +565,28 @@ class Venue {
      * @param   string $lang
      * @return array
      */
-    public function toArray($lang = 'en') {
+    public function toArray($params) {
+        
+        if(!isset($params['lang']) || empty($params['lang'])){
+            $params['lang'] = 'en';
+        }
+
         $venue = array(
             'id' => $this->id,
-            'name' => $this->getName($lang),
+            'name' => $this->getName($params['lang']),
+            'logo' => $this->getLogo($params['request']),
             'email' => $this->email,
             'website' => $this->website,
             'facebook' => $this->facebook,
             'twitter' => $this->twitter,
             'offers' => $this->offers,
             'address' => array(
-                'text' => $this->getAddressText($lang),
+                'text' => $this->getAddressText($params['lang']),
                 'latitude' => $this->getAddressLatitude(),
                 'logitude' => $this->getAddressLongitude()
                 ),
-            'opening_times' => $this->getOpeningTimes($lang),
-            'services' => $this->getServices($lang),
+            'opening_times' => $this->getOpeningTimes($params['lang']),
+            'services' => $this->getServices($params['lang']),
             'categories' => $this->getCategoriesAsArray(),
             'phones' => $this->getPhonesAsArray(),
             'branches' => $this->getBranchesAsArray()
@@ -780,5 +793,45 @@ class Venue {
      */
     public function getAddressTextAr() {
         return $this->address_text_ar;
+    }
+
+    protected function _getUploadRootDir() {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__ . '/../../../../web/' . $this->_getUploadDir();
+    }
+
+    protected function _getUploadDir() {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/venues';
+    }
+
+    /**
+     * Set logo
+     *
+     * @param string $logo
+     * @return Venue
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    protected function __getLogoUploadPath(){
+        return '/uploads/venues/';
+    }
+
+    /**
+     * Get logo
+     *
+     * @return string 
+     */
+    public function getLogo($request) {
+        $logo = $this->__getLogoUploadPath() . $this->logo;
+        $logo_full_url = str_replace('/app_dev.php', '', $request->getUriForPath($logo));
+        return $logo_full_url;
     }
 }
