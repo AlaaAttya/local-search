@@ -62,6 +62,11 @@ class VenueController extends Controller
                 $em->persist($menu);
             }
 
+            foreach($entity->getOffers() as $offer) {
+                $offer->setVendor($entity);
+                $em->persist($offer);
+            }
+
             $em->flush();
 
             return $this->redirect($this->generateUrl('venue_show', array('id' => $entity->getId())));
@@ -195,6 +200,7 @@ class VenueController extends Controller
 
         $originalBranches = new \Doctrine\Common\Collections\ArrayCollection();
         $originalMenus = new \Doctrine\Common\Collections\ArrayCollection();
+        $originalOffers = new \Doctrine\Common\Collections\ArrayCollection();
 
         // Create an ArrayCollection of the current branch objects in the database
         foreach ($entity->getBranches() as $branch) {
@@ -204,6 +210,11 @@ class VenueController extends Controller
         // Create an ArrayCollection of the current menu objects in the database
         foreach ($entity->getMenus() as $menu) {
             $originalMenus->add($menu);
+        }
+
+        // Create an ArrayCollection of the current menu objects in the database
+        foreach ($entity->getOffers() as $offer) {
+            $originalOffers->add($offer);
         }
 
         if (!$entity) {
@@ -230,6 +241,13 @@ class VenueController extends Controller
                 $em->persist($menu);              
             }
 
+            // Fixing the null venu issue
+            // for the new added offers
+            foreach ($entity->getOffers() as $offer) {
+                $offer->setVendor($entity);
+                $em->persist($offer);              
+            }
+
             // Updating the currnt branches
             // attached to the venue
             foreach($originalBranches as $branch) {
@@ -249,6 +267,16 @@ class VenueController extends Controller
                     $em->persist($menu);
                 }
             }
+
+            foreach($originalOffers as $offer) {
+                if (false === $entity->getOffers()->contains($offer)) {
+                    $offer->setVendor(null);
+                } else {
+                    $offer->setVendor($entity);
+                    $em->persist($offer);
+                }
+            }
+
             $em->persist($entity);
             $em->flush();
 

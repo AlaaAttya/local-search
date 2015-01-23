@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @category FormType
  */
 class MenuType extends AbstractType {
-        /**
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */

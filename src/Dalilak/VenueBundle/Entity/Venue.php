@@ -79,9 +79,9 @@ class Venue {
     /**
      * @var string
      *
-     * @ORM\Column(name="offers", type="text")
+     * @ORM\Column(name="opening_times_ar", type="text", nullable=true)
      */
-    private $offers;
+    private $openingTimes_ar;
 
     /**
      * @var string
@@ -89,6 +89,13 @@ class Venue {
      * @ORM\Column(name="services", type="text")
      */
     private $services;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="services_ar", type="text", nullable=true)
+     */
+    private $services_ar;
 
     /**
      * @var string
@@ -131,11 +138,27 @@ class Venue {
 
     /**
      * @var string
+     * 
+     * @ORM\Column(name="address_text_ar", type="text", nullable=true)
+     */
+    private $address_text_ar;
+
+    /**
+     * @var string
      *
      * 
      * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Branch", mappedBy="venue" ,cascade={"persist"})
      */
     private $branches;
+
+    /**
+     * Venue images (logo or venue images)
+     * @var string
+     *
+     * 
+     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Image", mappedBy="venue" ,cascade={"persist"})
+     */
+    private $images;
     
     /**
      * @var string
@@ -144,6 +167,14 @@ class Venue {
      * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Menu", mappedBy="venue" ,cascade={"persist"})
      */
     private $menus;
+
+    /**
+     * @var string
+     *
+     * 
+     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Offer", mappedBy="vendor" ,cascade={"persist"})
+     */
+    private $offers;
 
     /**
      * Get id
@@ -169,9 +200,12 @@ class Venue {
     /**
      * Get name
      *
+     * @param   string $lang
      * @return string 
      */
-    public function getName() {
+    public function getName($lang) {
+        if($lang == 'ar')
+            return $this->nameAr;
         return $this->name;
     }
 
@@ -295,31 +329,13 @@ class Venue {
     /**
      * Get openingTimes
      *
+     * @param   string $lang
      * @return string 
      */
-    public function getOpeningTimes() {
+    public function getOpeningTimes($lang = 'en') {
+        if($lang == 'ar')
+            return $this->openingTimes_ar;
         return $this->openingTimes;
-    }
-
-    /**
-     * Set offers
-     *
-     * @param string $offers
-     * @return Venue
-     */
-    public function setOffers($offers) {
-        $this->offers = $offers;
-
-        return $this;
-    }
-
-    /**
-     * Get offers
-     *
-     * @return string 
-     */
-    public function getOffers() {
-        return $this->offers;
     }
 
     /**
@@ -337,9 +353,12 @@ class Venue {
     /**
      * Get services
      *
+     * @param   string $lang
      * @return string 
      */
-    public function getServices() {
+    public function getServices($lang = 'en') {
+        if($lang == 'ar')
+            return $this->services_ar;
         return $this->services;
     }
 
@@ -371,6 +390,8 @@ class Venue {
         $this->phones = new \Doctrine\Common\Collections\ArrayCollection();
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
         $this->branches = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->offers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->menus = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -516,9 +537,12 @@ class Venue {
     /**
      * Get text
      *
+     * @param   string $lang
      * @return string 
      */
-    public function getAddressText() {
+    public function getAddressText($lang = 'en') {
+        if($lang == 'ar')
+            return $this->address_text_ar;
         return $this->address_text;
     }
 
@@ -528,31 +552,32 @@ class Venue {
 
     /**
      * Retuen array representation of the current object
-     * @access public
      * 
+     * @access public
+     *
+     * @param   string $lang
      * @return array
      */
-    public function toArray() {
+    public function toArray($lang = 'en') {
         $venue = array(
             'id' => $this->id,
-            'name' => $this->name,
-            'name_ar' => $this->nameAr,
+            'name' => $this->getName($lang),
             'email' => $this->email,
             'website' => $this->website,
             'facebook' => $this->facebook,
             'twitter' => $this->twitter,
             'offers' => $this->offers,
             'address' => array(
-                'text' => $this->getAddressText(),
+                'text' => $this->getAddressText($lang),
                 'latitude' => $this->getAddressLatitude(),
                 'logitude' => $this->getAddressLongitude()
                 ),
-            'opening_times' => $this->openingTimes,
-            'services' => $this->services,
+            'opening_times' => $this->getOpeningTimes($lang),
+            'services' => $this->getServices($lang),
             'categories' => $this->getCategoriesAsArray(),
             'phones' => $this->getPhonesAsArray(),
             'branches' => $this->getBranchesAsArray()
-            );
+        );
         return $venue;
     }
 
@@ -606,8 +631,7 @@ class Venue {
      * @param \Dalilak\VenueBundle\Entity\Menu $menus
      * @return Venue
      */
-    public function addMenu(\Dalilak\VenueBundle\Entity\Menu $menus)
-    {
+    public function addMenu(\Dalilak\VenueBundle\Entity\Menu $menus) {
         $this->menus[] = $menus;
 
         return $this;
@@ -618,8 +642,7 @@ class Venue {
      *
      * @param \Dalilak\VenueBundle\Entity\Menu $menus
      */
-    public function removeMenu(\Dalilak\VenueBundle\Entity\Menu $menus)
-    {
+    public function removeMenu(\Dalilak\VenueBundle\Entity\Menu $menus) {
         $this->menus->removeElement($menus);
     }
 
@@ -628,12 +651,134 @@ class Venue {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getMenus()
-    {
+    public function getMenus() {
         return $this->menus;
     }
 
-    public function removeAllBranches(){
+    public function removeAllBranches() {
         $this->branches = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add images
+     *
+     * @param \Dalilak\VenueBundle\Entity\Image $images
+     * @return Venue
+     */
+    public function addImage(\Dalilak\VenueBundle\Entity\Image $images) {
+        $this->images[] = $images;
+
+        return $this;
+    }
+
+    /**
+     * Remove images
+     *
+     * @param \Dalilak\VenueBundle\Entity\Image $images
+     */
+    public function removeImage(\Dalilak\VenueBundle\Entity\Image $images) {
+        $this->images->removeElement($images);
+    }
+
+    /**
+     * Get images
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getImages() {
+        return $this->images;
+    }
+
+    /**
+     * Add offers
+     *
+     * @param \Dalilak\VenueBundle\Entity\Offer $offers
+     * @return Venue
+     */
+    public function addOffer(\Dalilak\VenueBundle\Entity\Offer $offers) {
+        $this->offers[] = $offers;
+
+        return $this;
+    }
+
+    /**
+     * Remove offers
+     *
+     * @param \Dalilak\VenueBundle\Entity\Offer $offers
+     */
+    public function removeOffer(\Dalilak\VenueBundle\Entity\Offer $offers) {
+        $this->offers->removeElement($offers);
+    }
+
+    /**
+     * Get offers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOffers() {
+        return $this->offers;
+    }
+
+    /**
+     * Set openingTimes_ar
+     *
+     * @param string $openingTimesAr
+     * @return Venue
+     */
+    public function setOpeningTimesAr($openingTimesAr) {
+        $this->openingTimes_ar = $openingTimesAr;
+
+        return $this;
+    }
+
+    /**
+     * Get openingTimes_ar
+     *
+     * @return string 
+     */
+    public function getOpeningTimesAr() {
+        return $this->openingTimes_ar;
+    }
+
+    /**
+     * Set services_ar
+     *
+     * @param string $servicesAr
+     * @return Venue
+     */
+    public function setServicesAr($servicesAr) {
+        $this->services_ar = $servicesAr;
+
+        return $this;
+    }
+
+    /**
+     * Get services_ar
+     *
+     * @return string 
+     */
+    public function getServicesAr() {
+        return $this->services_ar;
+    }
+
+    /**
+     * Set address_text_ar
+     *
+     * @param string $addressTextAr
+     * @return Venue
+     */
+    public function setAddressTextAr($addressTextAr) {
+        $this->address_text_ar = $addressTextAr;
+
+        return $this;
+    }
+
+    /**
+     * Get address_text_ar
+     *
+     * @return string 
+     */
+    public function getAddressTextAr() {
+        return $this->address_text_ar;
     }
 }

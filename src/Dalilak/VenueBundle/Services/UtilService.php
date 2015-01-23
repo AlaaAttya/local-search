@@ -24,12 +24,23 @@ class UtilService {
     /**
      * Turn Array of Entitities to array
      * 
+     * @param   Entity  $entityArray
+     * @param   array   $params
      * @return array
      */
-    public function entitiesToArray($entityArray) {
+    public function entitiesToArray($entityArray, $params = array()) {
         $resultsArray = array();
-        foreach ($entityArray as $entity)
-            $resultsArray[] = $entity->toArray();
+        // Return venue object or not
+        $has_venue = true;
+        if(!isset($params['has_venue']))
+            $has_venue = false;
+        
+        foreach ($entityArray as $entity) {
+            if(isset($params['lang']))
+                $resultsArray[] = $entity->toArray($has_venue, $params['lang']);
+            else 
+                $resultsArray[] = $entity->toArray();
+        }
 
         return $resultsArray;
     }

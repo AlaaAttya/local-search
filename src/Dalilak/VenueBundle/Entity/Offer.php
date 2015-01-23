@@ -35,6 +35,13 @@ class Offer {
     private $title;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="title_ar", type="string", length=255, nullable=true)
+     */
+    private $title_ar;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="valid_date", type="date")
@@ -44,14 +51,29 @@ class Offer {
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="string", length=255)
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
     private $image;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="vendor", type="string", length=255)
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description_ar", type="text", nullable=true)
+     */
+    private $description_ar;
+
+    /**
+     * Get the offer vendor (Venue)
+     * 
+     * @ORM\ManyToOne(targetEntity="Dalilak\VenueBundle\Entity\Venue",inversedBy="offers")
+     * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $vendor;
 
@@ -79,9 +101,12 @@ class Offer {
     /**
      * Get title
      *
+     * @param   string $lang
      * @return string 
      */
-    public function getTitle() {
+    public function getTitle($lang) {
+        if($lang == 'ar')
+            return $this->title_ar;
         return $this->title;
     }
 
@@ -128,12 +153,31 @@ class Offer {
     }
 
     /**
+     * populate an object to array
+     */
+    public function toArray($hasVenue = false, $lang = "en") {
+        $offerArray = array(
+            'id' => $this->getId(),
+            'title' => $this->getTitle($lang),
+            'description' => $this->getDescription($lang),
+            'valid_date' => $this->getValidDate(),
+            'image' => $this->getImage()
+        );
+        
+        if($hasVenue){
+            $offerArray['vendor'] = $this->getVendor()->toArray();
+        }
+        return $offerArray;
+    }
+
+
+    /**
      * Set vendor
      *
-     * @param string $vendor
+     * @param \Dalilak\VenueBundle\Entity\Venue $vendor
      * @return Offer
      */
-    public function setVendor($vendor) {
+    public function setVendor(\Dalilak\VenueBundle\Entity\Venue $vendor = null) {
         $this->vendor = $vendor;
 
         return $this;
@@ -142,23 +186,75 @@ class Offer {
     /**
      * Get vendor
      *
-     * @return string 
+     * @return \Dalilak\VenueBundle\Entity\Venue 
      */
     public function getVendor() {
         return $this->vendor;
     }
 
     /**
-     * populate an object to array
+     * Set title_ar
+     *
+     * @param string $titleAr
+     * @return Offer
      */
-    public function toArray() {
-        return array(
-            'id' => $this->getId(),
-            'title' => $this->getTitle(),
-            'vendor' => $this->getVendor(),
-            'valid_date' => $this->getValidDate(),
-            'image' => $this->getImage()
-        );
+    public function setTitleAr($titleAr) {
+        $this->title_ar = $titleAr;
+
+        return $this;
     }
 
+    /**
+     * Get title_ar
+     *
+     * @return string 
+     */
+    public function getTitleAr() {
+        return $this->title_ar;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Offer
+     */
+    public function setDescription($description) {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @param   string $lang
+     * @return string 
+     */
+    public function getDescription($lang) {
+        if($lang == 'ar')
+            return $this->description_ar;
+        return $this->description;
+    }
+
+    /**
+     * Set description_ar
+     *
+     * @param string $descriptionAr
+     * @return Offer
+     */
+    public function setDescriptionAr($descriptionAr) {
+        $this->description_ar = $descriptionAr;
+
+        return $this;
+    }
+
+    /**
+     * Get description_ar
+     *
+     * @return string 
+     */
+    public function getDescriptionAr() {
+        return $this->description_ar;
+    }
 }

@@ -1,0 +1,128 @@
+<script type="text/javascript">
+	var $collectionHolder;
+
+        // setup a "add a tag" link
+        var $addTagLink = $('<a href="#" class="add_tag_link">Add branch</a>');
+        var $newLinkLi = $('<li></li>').append($addTagLink);
+
+        // setup a "add a menu" link
+        var $addMenuLink = $('<a href="#" class="add_menu_link">Add menu</a>');
+        var $newMenuLi = $('<li></li>').append($addMenuLink);
+
+        // Setup a "add an offer" link
+        var $addOfferLink = $('<a href="#" class="add_menu_link">Add offer</a>');
+        var $newOfferLi = $('<li></li>').append($addOfferLink);
+
+        jQuery(document).ready(function() {
+            // Get the ul that holds the collection of each item
+            $collectionHolder = $('ul.barnches');
+            $collectionMenuHolder = $('ul.menus');
+            $collectionOfferHolder = $('ul.offers');
+
+            // add a delete link to all of the existing tag form li elements (branches)
+            $collectionHolder.find('li').each(function() {
+            	addTagFormDeleteLink($(this), 'branch');
+            });
+
+            // add a delete link to all of the existing tag form li elements (menus)
+            $collectionMenuHolder.find('li').each(function() {
+            	addTagFormDeleteLink($(this), 'menu');
+            });
+
+            // add a delete link to all of the existing tag form li elements (offers)
+            $collectionOfferHolder.find('li').each(function() {
+            	addTagFormDeleteLink($(this), 'offer');
+            });
+
+            // add the "add a branch" anchor and li to the brances ul
+            $collectionHolder.append($newLinkLi);
+
+            // add the "add a menu" anchor and li to the menus ul
+            $collectionMenuHolder.append($newMenuLi );
+
+            // add the "add an iffer" anchor and li to the offers ul
+            $collectionOfferHolder.append($newOfferLi );
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionMenuHolder.data('index', $collectionMenuHolder.find(':input').length);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionOfferHolder.data('index', $collectionOfferHolder.find(':input').length);
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder, $newLinkLi, "branch");
+            });
+
+            $addMenuLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm($collectionMenuHolder, $newMenuLi, "menu");
+            });
+
+            $addOfferLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm($collectionOfferHolder, $newOfferLi, "offer");
+            });
+        });
+
+		/**
+		 * Append item form
+		 *
+		 * @param 	string	$collectionHolder
+		 * @param	string	$newLinkLi	
+		 * @param 	string	$text	item type "tag, menu item, offer"
+		 */
+		 function addTagForm($collectionHolder, $newLinkLi, $text) {
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormLi = $('<li>Add ' + $text + '<br /></li>').append(newForm);
+
+            // Add delete branch
+            addTagFormDeleteLink($newFormLi, $text);
+
+            $newLinkLi.before($newFormLi);
+        }
+
+        /**
+         * Append delete item link
+         */
+         function addTagFormDeleteLink($tagFormLi, $text) {
+         	var $removeFormA = $('<a href="#">delete this ' + $text + '</a>');
+         	$tagFormLi.append($removeFormA);
+
+         	$removeFormA.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $tagFormLi.remove();
+            });
+         }
+     </script>

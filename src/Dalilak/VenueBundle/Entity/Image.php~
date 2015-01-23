@@ -160,27 +160,4 @@ class Image
         $file = null;
         $fileName = null;
     }
-
-    /**
-     * Set imageType
-     *
-     * @param string $imageType
-     * @return Image
-     */
-    public function setImageType($imageType)
-    {
-        $this->imageType = $imageType;
-
-        return $this;
-    }
-
-    /**
-     * Get imageType
-     *
-     * @return string 
-     */
-    public function getImageType()
-    {
-        return $this->imageType;
-    }
 }

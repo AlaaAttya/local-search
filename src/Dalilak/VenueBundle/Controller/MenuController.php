@@ -13,7 +13,7 @@ use Dalilak\VenueBundle\Form\MenuType;
 /**
  * Menu controller.
  *
- * @Route("/menu")
+ * 
  */
 class MenuController extends Controller
 {
@@ -84,18 +84,30 @@ class MenuController extends Controller
     /**
      * Displays a form to create a new Menu entity.
      *
-     * @Route("/new", name="menu_new")
+     * @Route("/venue/{venue_id}/menus", name="menu_new")
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
-    {
+    public function newAction($venue_id) {
+        // Check venue existence
+        $em = $this->getDoctrine()->getManager();
+
+        $venue = $em->getRepository('DalilakVenueBundle:Venue')->find($venue_id);
+        $menue_items = array();
+        if (!$venue) {
+            throw $this->createNotFoundException('Unable to find Menu entity.');
+        } else {
+            $menue_items = $venue->getMenus();
+        }
+
         $entity = new Menu();
         $form   = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'menue_items' => $menue_items,
+            'item_string' => '<div id="dalilak_venuebundle_venue_menus___name__" ><div><label for="dalilak_venuebundle_venue_menus___name___item_name">Item name</label><input type="text" id="dalilak_venuebundle_venue_menus___name___item_name" name="dalilak_venuebundle_venue[menus][__name__][item_name]" /></div><div><label for="dalilak_venuebundle_venue_menus___name___ingerdients">Ingerdients</label><input type="text" id="dalilak_venuebundle_venue_menus___name___ingerdients" name="dalilak_venuebundle_venue[menus][__name__][ingerdients]" /></div><div><label for="dalilak_venuebundle_venue_menus___name___size1">Size1</label><input type="text" id="dalilak_venuebundle_venue_menus___name___size1" name="dalilak_venuebundle_venue[menus][__name__][size1]" /></div><div><label for="dalilak_venuebundle_venue_menus___name___size1_price">Size1 price</label><input type="text" id="dalilak_venuebundle_venue_menus___name___size1_price" name="dalilak_venuebundle_venue[menus][__name__][size1_price]" /></div><div><label for="dalilak_venuebundle_venue_menus___name___size2">Size2</label><input type="text" id="dalilak_venuebundle_venue_menus___name___size2" name="dalilak_venuebundle_venue[menus][__name__][size2]" /></div><div><label for="dalilak_venuebundle_venue_menus___name___size2_price">Size2 price</label><input type="text" id="dalilak_venuebundle_venue_menus___name___size2_price" name="dalilak_venuebundle_venue[menus][__name__][size2_price]" /></div><div><label for="dalilak_venuebundle_venue_menus___name___size3">Size3</label><input type="text" id="dalilak_venuebundle_venue_menus___name___size3" name="dalilak_venuebundle_venue[menus][__name__][size3]" /></div><div><label for="dalilak_venuebundle_venue_menus___name___size3_price">Size3 price</label><input type="text" id="dalilak_venuebundle_venue_menus___name___size3_price" name="dalilak_venuebundle_venue[menus][__name__][size3_price]" /></div></div>'
         );
     }
 

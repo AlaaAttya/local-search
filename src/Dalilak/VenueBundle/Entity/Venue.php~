@@ -79,9 +79,9 @@ class Venue {
     /**
      * @var string
      *
-     * @ORM\Column(name="offers", type="text")
+     * @ORM\Column(name="opening_times_ar", type="text", nullable=true)
      */
-    private $offers;
+    private $openingTimes_ar;
 
     /**
      * @var string
@@ -89,6 +89,13 @@ class Venue {
      * @ORM\Column(name="services", type="text")
      */
     private $services;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="services_ar", type="text", nullable=true)
+     */
+    private $services_ar;
 
     /**
      * @var string
@@ -131,11 +138,27 @@ class Venue {
 
     /**
      * @var string
+     * 
+     * @ORM\Column(name="address_text_ar", type="text", nullable=true)
+     */
+    private $address_text_ar;
+
+    /**
+     * @var string
      *
      * 
      * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Branch", mappedBy="venue" ,cascade={"persist"})
      */
     private $branches;
+
+    /**
+     * Venue images (logo or venue images)
+     * @var string
+     *
+     * 
+     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Image", mappedBy="venue" ,cascade={"persist"})
+     */
+    private $images;
     
     /**
      * @var string
@@ -144,6 +167,14 @@ class Venue {
      * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Menu", mappedBy="venue" ,cascade={"persist"})
      */
     private $menus;
+
+    /**
+     * @var string
+     *
+     * 
+     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Offer", mappedBy="vendor" ,cascade={"persist"})
+     */
+    private $offers;
 
     /**
      * Get id
@@ -169,9 +200,12 @@ class Venue {
     /**
      * Get name
      *
+     * @param   string $lang
      * @return string 
      */
-    public function getName() {
+    public function getName($lang) {
+        if($lang == 'ar')
+            return $this->nameAr;
         return $this->name;
     }
 
@@ -302,27 +336,6 @@ class Venue {
     }
 
     /**
-     * Set offers
-     *
-     * @param string $offers
-     * @return Venue
-     */
-    public function setOffers($offers) {
-        $this->offers = $offers;
-
-        return $this;
-    }
-
-    /**
-     * Get offers
-     *
-     * @return string 
-     */
-    public function getOffers() {
-        return $this->offers;
-    }
-
-    /**
      * Set services
      *
      * @param string $services
@@ -371,6 +384,8 @@ class Venue {
         $this->phones = new \Doctrine\Common\Collections\ArrayCollection();
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
         $this->branches = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->offers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->menus = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -528,15 +543,16 @@ class Venue {
 
     /**
      * Retuen array representation of the current object
-     * @access public
      * 
+     * @access public
+     *
+     * @param   string $lang
      * @return array
      */
-    public function toArray() {
+    public function toArray($lang = 'en') {
         $venue = array(
             'id' => $this->id,
-            'name' => $this->name,
-            'name_ar' => $this->nameAr,
+            'name' => $this->getName($lang),
             'email' => $this->email,
             'website' => $this->website,
             'facebook' => $this->facebook,
@@ -546,13 +562,13 @@ class Venue {
                 'text' => $this->getAddressText(),
                 'latitude' => $this->getAddressLatitude(),
                 'logitude' => $this->getAddressLongitude()
-            ),
+                ),
             'opening_times' => $this->openingTimes,
             'services' => $this->services,
             'categories' => $this->getCategoriesAsArray(),
             'phones' => $this->getPhonesAsArray(),
             'branches' => $this->getBranchesAsArray()
-        );
+            );
         return $venue;
     }
 
@@ -631,5 +647,75 @@ class Venue {
     public function getMenus()
     {
         return $this->menus;
+    }
+
+    public function removeAllBranches(){
+        $this->branches = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add images
+     *
+     * @param \Dalilak\VenueBundle\Entity\Image $images
+     * @return Venue
+     */
+    public function addImage(\Dalilak\VenueBundle\Entity\Image $images)
+    {
+        $this->images[] = $images;
+
+        return $this;
+    }
+
+    /**
+     * Remove images
+     *
+     * @param \Dalilak\VenueBundle\Entity\Image $images
+     */
+    public function removeImage(\Dalilak\VenueBundle\Entity\Image $images)
+    {
+        $this->images->removeElement($images);
+    }
+
+    /**
+     * Get images
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * Add offers
+     *
+     * @param \Dalilak\VenueBundle\Entity\Offer $offers
+     * @return Venue
+     */
+    public function addOffer(\Dalilak\VenueBundle\Entity\Offer $offers)
+    {
+        $this->offers[] = $offers;
+
+        return $this;
+    }
+
+    /**
+     * Remove offers
+     *
+     * @param \Dalilak\VenueBundle\Entity\Offer $offers
+     */
+    public function removeOffer(\Dalilak\VenueBundle\Entity\Offer $offers)
+    {
+        $this->offers->removeElement($offers);
+    }
+
+    /**
+     * Get offers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOffers()
+    {
+        return $this->offers;
     }
 }
