@@ -63,11 +63,11 @@ class Branch {
     private $address_text;
 
     
-  /**
-   * 
-   * @ORM\ManyToOne(targetEntity="Dalilak\VenueBundle\Entity\Venue",inversedBy="branches")
-   * @ORM\JoinColumn(referencedColumnName="id")
-   */
+    /**
+     * 
+     * @ORM\ManyToOne(targetEntity="Dalilak\VenueBundle\Entity\Venue",inversedBy="branches")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
     private $venue;
 
     /**

@@ -9,9 +9,15 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * Image
+ * 
+ * @author Alaa Attya <alaa.attya91@gmail.com> 
+ * @package Dalilak.VenueBundle.Entity
+ * @version 1.0
+ * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @category Entity
  *
- * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Table(name="images")
+ * @ORM\Entity(repositoryClass="Dalilak\VenueBundle\Repository\ImageRepository")
  */
 class Image
 {
@@ -39,10 +45,10 @@ class Image
     /**
      * Image venue 
      *
-     * @ORM\ManyToOne(targetEntity="Dalilak\VenueBundle\Entity\Venue",inversedBy="images")
+     * @ORM\ManyToOne(targetEntity="Dalilak\VenueBundle\Entity\Album",inversedBy="images")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
-    private $venue;
+    private $album;
 
     /**
      * Image or logo
@@ -53,12 +59,25 @@ class Image
     private $imageType;
 
     /**
+     * Image caption
+     *
+     * @ORM\Column(name="caption", type="string", length=255, nullable=true)
+     */
+    private $caption;
+
+    /**
+     * Image name
+     *
+     * @ORM\Column(name="image_name", type="string", length=255, nullable=true)
+     */
+    private $image_name;
+
+    /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -68,8 +87,7 @@ class Image
      * @param string $title
      * @return Image
      */
-    public function setTitle($title)
-    {
+    public function setTitle($title) {
         $this->title = $title;
 
         return $this;
@@ -80,20 +98,18 @@ class Image
      *
      * @return string 
      */
-    public function getTitle()
-    {
+    public function getTitle() {
         return $this->title;
     }
 
     /**
-     * Set venue
+     * Set album
      *
-     * @param string $venue
+     * @param string $album
      * @return Image
      */
-    public function setVenue($venue)
-    {
-        $this->venue = $venue;
+    public function setAlbum($album) {
+        $this->album = $album;
 
         return $this;
     }
@@ -121,9 +137,9 @@ class Image
      *
      * @return string 
      */
-    public function getVenue()
+    public function getAlbum()
     {
-        return $this->venue;
+        return $this->album;
     }
 
     protected function getUploadRootDir() {
@@ -167,8 +183,7 @@ class Image
      * @param string $imageType
      * @return Image
      */
-    public function setImageType($imageType)
-    {
+    public function setImageType($imageType) {
         $this->imageType = $imageType;
 
         return $this;
@@ -179,8 +194,64 @@ class Image
      *
      * @return string 
      */
-    public function getImageType()
-    {
+    public function getImageType() {
         return $this->imageType;
+    }
+
+    /**
+     * Set caption
+     *
+     * @param string $caption
+     * @return Image
+     */
+    public function setCaption($caption) {
+        $this->caption = $caption;
+
+        return $this;
+    }
+
+    /**
+     * Get caption
+     *
+     * @return string 
+     */
+    public function getCaption() {
+        return $this->caption;
+    }
+
+    /**
+     * Set image_name
+     *
+     * @param string $imageName
+     * @return Image
+     */
+    public function setImageName($imageName)
+    {
+        $this->image_name = $imageName;
+
+        return $this;
+    }
+
+    /**
+     * Get image_name
+     *
+     * @return string 
+     */
+    public function getImageName($request) {
+        $image = $this->__getImageUploadPath() . $this->image_name;
+        $image_full_url = str_replace('/app_dev.php', '', $request->getUriForPath($image));
+        return $image_full_url;
+    }
+
+    protected function __getImageUploadPath(){
+        return '/uploads/venues/albums/';
+    }
+
+    public function toArray($params){
+        return array(
+            'id' => $this->id,
+            'caption' => $this->getCaption(),
+            'image_url' => $this->getImageName($params['request'])
+        );
     }
 }

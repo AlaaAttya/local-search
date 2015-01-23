@@ -163,4 +163,18 @@ class APIController extends BaseController {
         return $this->prepareResponse($offerArray);
     }
 
+    /**
+     * Get album images
+     * 
+     * @Route("/ablum/images/{album_id}")
+     */
+    public function getImagesByAlbumId($album_id){
+        $request = $this->getRequest();
+        $images = $this->getDoctrine()
+                ->getRepository('DalilakVenueBundle:Image')
+                ->findBy(array('album' => $album_id));
+        $imagesArray = $this->getAppService('util')->entitiesToArray($images, array('request' => $request));
+        return $this->prepareResponse($imagesArray);
+    }
+
 }

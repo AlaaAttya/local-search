@@ -178,6 +178,14 @@ class Venue {
 
     /**
      * @var string
+     *
+     * 
+     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Album", mappedBy="venue" ,cascade={"persist"})
+     */
+    private $albums;
+
+    /**
+     * @var string
      * 
      * @ORM\Column(name="logo", type="text", nullable=true)
      */
@@ -833,5 +841,38 @@ class Venue {
         $logo = $this->__getLogoUploadPath() . $this->logo;
         $logo_full_url = str_replace('/app_dev.php', '', $request->getUriForPath($logo));
         return $logo_full_url;
+    }
+
+    /**
+     * Add albums
+     *
+     * @param \Dalilak\VenueBundle\Entity\Album $albums
+     * @return Venue
+     */
+    public function addAlbum(\Dalilak\VenueBundle\Entity\Album $albums)
+    {
+        $this->albums[] = $albums;
+
+        return $this;
+    }
+
+    /**
+     * Remove albums
+     *
+     * @param \Dalilak\VenueBundle\Entity\Album $albums
+     */
+    public function removeAlbum(\Dalilak\VenueBundle\Entity\Album $albums)
+    {
+        $this->albums->removeElement($albums);
+    }
+
+    /**
+     * Get albums
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAlbums()
+    {
+        return $this->albums;
     }
 }
