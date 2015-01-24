@@ -78,10 +78,10 @@ class Album
      * 
      * @return array
      */
-    public function getImagesAsArray() {
+    public function getImagesAsArray($request) {
         $images = array();
         foreach ($this->images as $image) {
-            $images[] = $image->toArray();
+            $images[] = $image->toArray($request);
         }
         return $images;
     }
@@ -124,5 +124,13 @@ class Album
     public function getImages()
     {
         return $this->images;
+    }
+
+    public function toArray($params){
+        return array(
+            'id' => $this->id,
+            'venue_id' => $this->getVenue()->getId(),
+            'images' => $this->getImagesAsArray(array('request' => $params['request']))
+        );
     }
 }

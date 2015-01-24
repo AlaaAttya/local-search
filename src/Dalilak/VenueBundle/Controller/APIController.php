@@ -191,4 +191,33 @@ class APIController extends BaseController {
         return $this->prepareResponse($albumsArray);
     }
 
+    /**
+     * Get Ads by category id
+     *
+     * @Route("/ad/category/{category_id}/{lang}")
+     */
+    public function getAdsByCategory($category_id, $lang = 'en'){
+        $request = $this->getRequest();
+        $ads = $this->getDoctrine()
+                ->getRepository('DalilakVenueBundle:Ad')
+                ->findBy(array('category' => $category_id));
+        $adsArray = $this->getAppService('util')->entitiesToArray($ads, array('request' => $request, 'lang' => $lang));
+        return $this->prepareResponse($adsArray);
+    }
+
+    /**
+     * Get Ads by category id
+     *
+     * @Route("/ad-random/{lang}")
+     */
+    public function getRandomAd($lang = 'en'){
+        $request = $this->getRequest();
+        $ads = $this->getDoctrine()
+                ->getRepository('DalilakVenueBundle:Ad')
+                ->findBy(array('category' => '1'));
+        $adsArray = $this->getAppService('util')->entitiesToArray($ads, array('request' => $request, 'lang' => $lang));
+        return $this->prepareResponse($adsArray);
+    }
+
+
 }

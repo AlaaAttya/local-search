@@ -218,4 +218,40 @@ class Image
     public function getCaption() {
         return $this->caption;
     }
+
+    /**
+     * Set image_name
+     *
+     * @param string $imageName
+     * @return Image
+     */
+    public function setImageName($imageName)
+    {
+        $this->image_name = $imageName;
+
+        return $this;
+    }
+
+    /**
+     * Get image_name
+     *
+     * @return string 
+     */
+    public function getImageName($request) {
+        $image = $this->__getImageUploadPath() . $this->image_name;
+        $image_full_url = str_replace('/app_dev.php', '', $request->getUriForPath($image));
+        return $image_full_url;
+    }
+
+    protected function __getImageUploadPath(){
+        return '/uploads/venues/albums/';
+    }
+
+    public function toArray($params){
+        return array(
+            'id' => $this->id,
+            'caption' => $this->getCaption(),
+            'image_url' => $this->getImageName($params['request'])
+        );
+    }
 }

@@ -65,7 +65,7 @@ class Branch {
     
     /**
      * 
-     * @ORM\ManyToOne(targetEntity="Dalilak\VenueBundle\Entity\Venue",inversedBy="branches")
+     * @ORM\ManyToOne(targetEntity="Dalilak\VenueBundle\Entity\Venue", inversedBy="branches")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $venue;

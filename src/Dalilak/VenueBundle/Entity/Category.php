@@ -47,6 +47,13 @@ class Category {
      * */
     private $venues;
 
+
+    /**
+     * @ORM\OneToOne(targetEntity="Dalilak\VenueBundle\Entity\Ad", inversedBy="category")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    protected $ad;
+
     /**
      * Get id
      *
@@ -151,4 +158,26 @@ class Category {
         return $category;
     }
 
+    /**
+     * Set ad
+     *
+     * @param \Dalilak\VenueBundle\Entity\Ad $ad
+     * @return Category
+     */
+    public function setAd(\Dalilak\VenueBundle\Entity\Ad $ad = null)
+    {
+        $this->ad = $ad;
+
+        return $this;
+    }
+
+    /**
+     * Get ad
+     *
+     * @return \Dalilak\VenueBundle\Entity\Ad 
+     */
+    public function getAd()
+    {
+        return $this->ad;
+    }
 }
