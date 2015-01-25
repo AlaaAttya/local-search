@@ -104,7 +104,7 @@ class Offer {
      * @param   string $lang
      * @return string 
      */
-    public function getTitle($lang) {
+    public function getTitle($lang = 'en') {
         if($lang == 'ar')
             return $this->title_ar;
         return $this->title;
@@ -237,7 +237,7 @@ class Offer {
      * @param   string $lang
      * @return string 
      */
-    public function getDescription($lang) {
+    public function getDescription($lang = 'en') {
         if($lang == 'ar')
             return $this->description_ar;
         return $this->description;
