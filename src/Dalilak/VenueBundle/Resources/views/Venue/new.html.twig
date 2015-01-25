@@ -151,15 +151,30 @@
             {{form_widget(form.openingTimes, {'attr':{'class':'form-control editor'}})}}
         </div>
 
+        <div class="form-group">
+            {{form_label(form.openingTimes_ar, 'Opening Times Arabic')}}
+            {{form_widget(form.openingTimes_ar, {'attr':{'class':'form-control editor'}})}}
+        </div>
 
         <div class="form-group">
             {{form_label(form.services, 'Services')}}
             {{form_widget(form.services, {'attr':{'class':'form-control editor'}})}}
         </div>
+
+        <div class="form-group">
+            {{form_label(form.services_ar, 'Services Arabic')}}
+            {{form_widget(form.services_ar, {'attr':{'class':'form-control editor'}})}}
+        </div>
+
         <div style="height:600px" id="map-canvas"></div>
         <div class="form-group">
             {{form_label(form.address_text, 'Address')}}
             {{form_widget(form.address_text, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(form.address_text_ar, 'Address Arabic')}}
+            {{form_widget(form.address_text_ar, {'attr':{'class':'form-control'}})}}
         </div>
 
         <div class="form-group row col-md-12">
