@@ -13,10 +13,15 @@ use Dalilak\VenueBundle\Form\VenueType;
 /**
  * Venue controller.
  *
+ * @author Alaa Attya <alaa.attya91@gmail.com> 
+ * @package Dalilak.VenueBundle.Controller
+ * @version 1.0
+ * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @category Controller
+ *
  * @Route("/venue")
  */
-class VenueController extends Controller
-{
+class VenueController extends Controller {
 
     /**
      * Lists all Venue entities.
@@ -25,8 +30,7 @@ class VenueController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('DalilakVenueBundle:Venue')->findAll();
@@ -35,6 +39,7 @@ class VenueController extends Controller
             'entities' => $entities,
         );
     }
+    
     /**
      * Creates a new Venue entity.
      *
@@ -42,8 +47,7 @@ class VenueController extends Controller
      * @Method("POST")
      * @Template("DalilakVenueBundle:Venue:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new Venue();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
