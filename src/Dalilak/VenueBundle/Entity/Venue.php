@@ -218,7 +218,7 @@ class Venue {
      * @param   string $lang
      * @return string 
      */
-    public function getName($lang) {
+    public function getName($lang = '') {
         if($lang == 'ar')
             return $this->nameAr;
         return $this->name;
