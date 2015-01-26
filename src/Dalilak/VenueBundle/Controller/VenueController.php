@@ -39,7 +39,7 @@ class VenueController extends Controller {
             'entities' => $entities,
         );
     }
-    
+
     /**
      * Creates a new Venue entity.
      *
@@ -126,8 +126,7 @@ class VenueController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('DalilakVenueBundle:Venue')->find($id);
@@ -151,8 +150,7 @@ class VenueController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('DalilakVenueBundle:Venue')->find($id);
@@ -178,8 +176,7 @@ class VenueController extends Controller {
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Venue $entity)
-    {
+    private function createEditForm(Venue $entity) {
         $form = $this->createForm(new VenueType(), $entity, array(
             'action' => $this->generateUrl('venue_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -192,12 +189,11 @@ class VenueController extends Controller {
     /**
      * Edits an existing Venue entity.
      *
-     * @Route("/{id}", name="venue_update")
+     * @Route("/{id}/{redirect_route_name}", name="venue_update")
      * @Method("PUT")
      * @Template("DalilakVenueBundle:Venue:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id, $redirect_route_name = null) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('DalilakVenueBundle:Venue')->find($id);
@@ -284,6 +280,8 @@ class VenueController extends Controller {
             $em->persist($entity);
             $em->flush();
 
+            if($redirect_route_name != null)
+                return $this->redirect($this->generateUrl($redirect_route_name, array('id' => $id)));
             return $this->redirect($this->generateUrl('venue_edit', array('id' => $id)));
         }
 
@@ -326,13 +324,87 @@ class VenueController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('venue_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+
+    /**
+     * Add venues branches
+     *
+     * @Route("/{id}/add_branches", name="venue_add_branches")
+     * @Template("DalilakVenueBundle:Venue:add_branches.html.twig")
+     */
+    public function addBranchesAction($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('DalilakVenueBundle:Venue')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Venue entity.');
+        }
+
+        $editForm = $this->createEditForm($entity);
+        $deleteForm = $this->createDeleteForm($id);
+
+        return array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'redirect_route' => 'venue_add_branches'
+        );
+    }
+
+    /**
+     * Add venue menues
+     *
+     * @Route("/{id}/add_menues", name="venue_add_menues")
+     * @Template("DalilakVenueBundle:Venue:add_menues.html.twig")
+     */
+    public function addMenuesAction($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('DalilakVenueBundle:Venue')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Venue entity.');
+        }
+
+        $editForm = $this->createEditForm($entity);
+        $deleteForm = $this->createDeleteForm($id);
+
+        return array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'redirect_route' => 'venue_add_menues'
+        );
+    }
+
+    /**
+     * Add venue offers
+     *
+     * @Route("/{id}/add_offers", name="venue_add_offers")
+     * @Template("DalilakVenueBundle:Venue:add_offers.html.twig")
+     */
+    public function addOffersAction($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('DalilakVenueBundle:Venue')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Venue entity.');
+        }
+
+        $editForm = $this->createEditForm($entity);
+        $deleteForm = $this->createDeleteForm($id);
+
+        return array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'redirect_route' => 'venue_add_offers'
+        );
     }
 }

@@ -1,0 +1,136 @@
+{% extends 'DalilakVenueBundle:Layouts:base.html.twig' %}
+
+{% block title %}Edit venue{% endblock %}
+{% block scripts %}
+    {{parent()}}
+        <!-- Encapculate the one to many relation form items' logic -->
+    {% include 'DalilakVenueBundle:scripts:one_to_many_items.html.twig' %}
+{% endblock %}
+{% block styles %}
+    {{parent()}}
+    <style>
+        .hide{
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content -%}
+    <h1>Venue edit</h1>
+
+    <form action="{{path('venue_update', {'id':app.request.attributes.get('id'), 'redirect_route_name': redirect_route  })}}" {{ form_enctype(edit_form)}} style="min-height: 400px;height: 100%;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
+        <input type="hidden" name="_method" value="PUT">
+        <div class="form-group hide">
+            {{form_label(edit_form.name, 'Name')}}
+            {{form_widget(edit_form.name, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group hide">
+            {{form_label(edit_form.nameAr, 'Arabic Name')}}
+            {{form_widget(edit_form.nameAr, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group hide">
+            {{form_label(edit_form.email, 'Email')}}
+            {{form_widget(edit_form.email, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group hide">
+            {{form_label(edit_form.facebook, 'Facebook')}}
+            {{form_widget(edit_form.facebook, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group hide">
+            {{form_label(edit_form.twitter, 'Twitter')}}
+            {{form_widget(edit_form.twitter, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group hide">
+            {{form_label(edit_form.website, 'Website')}}
+            {{form_widget(edit_form.website, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group hide">
+            {{form_label(edit_form.openingTimes, 'Opening Times')}}
+            {{form_widget(edit_form.openingTimes, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group hide">
+            {{form_label(edit_form.openingTimes_ar, 'Opening Times Arabic')}}
+            {{form_widget(edit_form.openingTimes_ar, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group hide">
+            {{form_label(edit_form.services, 'Services')}}
+            {{form_widget(edit_form.services, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group hide">
+            {{form_label(edit_form.services_ar, 'Services Arabic')}}
+            {{form_widget(edit_form.services_ar, {'attr':{'class':'form-control'}})}}
+        </div>
+        <div class="form-group hide">
+            {{form_label(edit_form.address_text, 'Address')}}
+            {{form_widget(edit_form.address_text, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group hide">
+            {{form_label(edit_form.address_text_ar, 'Address')}}
+            {{form_widget(edit_form.address_text_ar, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group row col-md-12 hide">
+            <div class="col-md-4">
+                {{form_label(edit_form.address_longitude, 'Longitude')}}
+                {{form_widget(edit_form.address_longitude, {'attr':{'class':'form-control'}})}}
+            </div>
+            <div class="col-md-4">
+                {{form_label(edit_form.address_latitude, 'Latitude')}}
+                {{form_widget(edit_form.address_latitude, {'attr':{'class':'form-control '}})}}
+            </div>
+        </div>
+
+        <div class="form-group hide">
+            {{form_label(edit_form.categories, 'Categories')}}
+            {{form_widget(edit_form.categories, {'attr':{'class':'form-control'}})}}
+        </div>
+        
+        <ul class="barnches hide" data-prototype="{{ form_widget(edit_form.branches.vars.prototype)|e }}">
+            {% for branch in edit_form.branches %}
+            <li>
+                {{form_label(branch, 'Branch')}}
+                {{form_widget(branch)}}
+            </li>
+            {% endfor %}
+        </ul>
+        <hr />
+        <ul class="menus hide" data-prototype="{{ form_widget(edit_form.menus.vars.prototype)|e }}">
+            {% for menu in edit_form.menus %}
+            <li>
+                {{form_label(menu, 'Menu')}}
+                {{form_widget(menu)}}
+            </li>
+            {% endfor %}
+        </ul>
+        <hr />
+        <ul class="offers" data-prototype="{{ form_widget(edit_form.offers.vars.prototype)|e }}">
+            {% for offer in edit_form.offers %}
+            <li>
+                {{form_label(offer, 'Offer')}}
+                {{form_widget(offer)}}
+            </li>
+            {% endfor %}
+        </ul>
+
+        {{form_widget(edit_form._token)}}
+        <button class="btn btn-primary">Update</button>
+    </form>    
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('venue') }}">
+                Back to the list
+            </a>
+        </li>
+    </ul>
+{% endblock %}

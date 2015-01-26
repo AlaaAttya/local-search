@@ -37,6 +37,15 @@
                     <td>
                         <ul>
                             <li class="action-align">
+                                <a href="{{ path('venue_add_branches', { 'id': entity.id }) }}" class="btn btn-primary">add branches</a>
+                            </li>
+                            <li class="action-align">
+                                <a href="{{ path('venue_add_menues', { 'id': entity.id }) }}" class="btn btn-primary">add menu</a>
+                            </li>
+                            <li class="action-align">
+                                <a href="{{ path('venue_add_offers', { 'id': entity.id }) }}" class="btn btn-primary">add offers</a>
+                            </li>
+                            <li class="action-align">
                                 <a href="{{ path('venue_show', { 'id': entity.id }) }}" class="btn btn-primary">show</a>
                             </li>
                             <li class="action-align">
