@@ -110,14 +110,22 @@
     <!-- Encapculate the one to many relation form items' logic -->
     {% include 'DalilakVenueBundle:scripts:one_to_many_items.html.twig' %}
 {% endblock %}
-{% block styles %}{{parent()}}{% endblock %}
+{% block styles %}
+    {{parent()}}
+    <style type="text/css">
+    .required-element {
+        color: red;
+        font-weight: bold;
+    }
+    </style>
+{% endblock %}
 
 {% block content -%}
     <h1>Venue creation</h1>
 
     <form action="{{path('venue_create')}}" {{ form_enctype(form)}} style="min-height: 2400px;height: 100%;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
         <div class="form-group">
-            {{form_label(form.name, 'Name')}}
+            {{form_label(form.name, 'Name')}} <span class="required-element">*</span>
             {{form_widget(form.name, {'attr':{'class':'form-control'}})}}
         </div>
 
@@ -127,8 +135,9 @@
         </div>
 
         <div class="form-group">
-            {{form_label(form.email, 'Email')}}
+            {{form_label(form.email, 'Email')}} <span class="required-element">*</span>
             {{form_widget(form.email, {'attr':{'class':'form-control'}})}}
+            {{form_errors(form.email)}}
         </div>
 
         <div class="form-group">

@@ -27,9 +27,9 @@ class VenueType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('name', 'text', array('required' => false))
+                ->add('name', 'text', array('required' => true))
                 ->add('nameAr', 'text', array('required' => false))
-                ->add('email', 'text', array('required' => false))
+                ->add('email', 'email', array('required' => true))
                 ->add('facebook', 'text', array('required' => false))
                 ->add('twitter', 'text', array('required' => false))
                 ->add('website', 'text', array('required' => false))

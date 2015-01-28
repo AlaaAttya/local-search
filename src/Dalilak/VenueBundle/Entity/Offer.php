@@ -152,10 +152,13 @@ class Offer {
      *
      * @return string 
      */
-    public function getImage($request) {
-        $image = $this->__getOffersUploadPath() . $this->image;
-        $image_full_url = str_replace('/app_dev.php', '', $request->getUriForPath($image));
-        return $image_full_url;
+    public function getImage($request = null) {
+        if($request != null){
+            $image = $this->__getOffersUploadPath() . $this->image;
+            $image_full_url = str_replace('/app_dev.php', '', $request->getUriForPath($image));    
+            return $image_full_url;
+        }
+        return $this->image;
     }
 
     /**

@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Dalilak\UserBundle\DalilakUserBundle(),
             new Dalilak\VenueBundle\DalilakVenueBundle(),
             new Dalilak\PublicServicesBundle\DalilakPublicServicesBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

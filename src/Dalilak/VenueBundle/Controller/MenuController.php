@@ -13,7 +13,7 @@ use Dalilak\VenueBundle\Form\MenuType;
 /**
  * Menu controller.
  *
- * 
+ * @Route("/menue") 
  */
 class MenuController extends Controller
 {
