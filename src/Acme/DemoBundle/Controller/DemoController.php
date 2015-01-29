@@ -16,8 +16,7 @@ class DemoController extends Controller
      * @Route("/", name="_demo")
      * @Template()
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         return array();
     }
 
