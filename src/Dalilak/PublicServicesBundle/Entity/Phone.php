@@ -37,6 +37,13 @@ class Phone {
     /**
      * @var string
      *
+     * @ORM\Column(name="title_ar", type="string", length=255)
+     */
+    private $title_ar;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="number", type="string", length=255)
      */
     private $number;
@@ -67,7 +74,9 @@ class Phone {
      *
      * @return string 
      */
-    public function getTitle() {
+    public function getTitle($lang = 'en') {
+        if($lang == 'ar')
+            return $this->title_ar;
         return $this->title;
     }
 
@@ -92,9 +101,35 @@ class Phone {
         return $this->number;
     }
 
-    public function toArray() {
+    /**
+     * Set title_ar
+     *
+     * @param string $titleAr
+     * @return Category
+     */
+    public function setTitleAr($titleAr) {
+        $this->title_ar = $titleAr;
+
+        return $this;
+    }
+
+    /**
+     * Get title_ar
+     *
+     * @return string 
+     */
+    public function getTitleAr() {
+        return $this->title_ar;
+    }
+
+    public function toArray($params = array()) {
+
+        if(!isset($params['lang']) || empty($params['lang'])){
+            $params['lang'] = 'en';
+        }
+
         return array(
-            'title' => $this->title,
+            'title' => $this->getTitle($params['lang']),
             'number' => $this->number
         );
     }

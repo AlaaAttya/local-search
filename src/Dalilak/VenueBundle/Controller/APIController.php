@@ -87,11 +87,11 @@ class APIController extends BaseController {
     /**
      * Get all public services numbers
      * 
-     * @Route("/public-numbers")
+     * @Route("/public-numbers/{lang}")
      */
-    public function getPublicServicesAction() {
+    public function getPublicServicesAction($lang = 'en') {
         $numbers = $this->getDoctrine()->getRepository('DalilakPublicServicesBundle:Phone')->findAll();
-        $numbersArray = $this->getAppService('util')->entitiesToArray($numbers);
+        $numbersArray = $this->getAppService('util')->entitiesToArray($numbers, array('lang' => $lang));
         return $this->prepareResponse($numbersArray);
     }
 
