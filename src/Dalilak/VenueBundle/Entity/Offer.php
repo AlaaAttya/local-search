@@ -165,6 +165,11 @@ class Offer {
      * populate an object to array
      */
     public function toArray($params) {
+
+        if(!isset($params['lang']) || empty($params['lang'])){
+            $params['lang'] = 'en';
+        }
+
         $offerArray = array(
             'id' => $this->getId(),
             'title' => $this->getTitle($params['lang']),
@@ -174,7 +179,11 @@ class Offer {
         );
         
         if(isset($params['has_venue'])){
-            $offerArray['vendor'] = $this->getVendor()->toArray();
+            $offerArray['vendor'] = $this->getVendor()->toArray(array(
+                'lang' => $params['lang'], 
+                'request' => $params['request']
+                )
+            );
         }
         return $offerArray;
     }
