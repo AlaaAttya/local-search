@@ -50,6 +50,38 @@ class VenueRepository extends EntityRepository {
     }
 
     /**
+     * Get Venues by category id
+     * 
+     * @param string $category_id
+     * @param integer $limit
+     */
+    public function getByCategoryId($category_id, $limit = 5, $last_id = null) {
+        $q = $this->createQueryBuilder('venue');
+        if (!empty($last_id) && $last_id != null) {
+            return $q->innerJoin("venue.categories", "c")
+                            ->where(
+                                    'c.id = :category_id'
+                            )
+                            ->andWhere("venue.id >= :venue_id")
+                            ->setMaxResults($limit)
+                            ->setParameter('category_id', $category_id)
+                            ->setParameter('venue_id', $last_id)
+                            ->getQuery()
+                            ->getResult();
+        } else {
+            return $q->innerJoin("venue.categories", "c")
+                            ->where(
+                                    'c.id = :category_id'
+                            )
+                            ->setMaxResults($limit)
+                            ->setParameter('category_id', $category_id)
+                            ->getQuery()
+                            ->getResult();
+        }
+    }
+
+
+    /**
      * Get venues bu name
      * 
      * @param string $name

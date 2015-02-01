@@ -43,6 +43,18 @@ class APIController extends BaseController {
     }
 
     /**
+     * Get venue by category alias
+     * 
+     * @Route("/venue/category-id/{category_id}/{limit}/{last_id}/{lang}")
+     */
+    public function getByCategoryId($category_id, $limit = 5, $last_id = null, $lang = 'en') {
+        $request = $this->getRequest();
+        $venues = $this->getDoctrine()->getRepository('DalilakVenueBundle:Venue')->getByCategoryId($category_id, $limit, $last_id);
+        $venuesArray = $this->getAppService('util')->entitiesToArray($venues, array('lang' => $lang, 'request' => $request));
+        return $this->prepareResponse($venuesArray);
+    }
+
+    /**
      * @Route("/venue/name/{name}/{limit}/{last_id}/{lang}")
      */
     public function getByName($name, $limit = 5, $last_id = null, $lang = 'en') {
@@ -98,13 +110,14 @@ class APIController extends BaseController {
     /**
      * Get all public services numbers
      * 
-     * @Route("/offers")
+     * @Route("/offers/{lang}")
      */
-    public function getAllOffers() {
+    public function getAllOffers($lang = 'en') {
+        $request = $this->getRequest();
         $offers = $this->getDoctrine()
         ->getRepository('DalilakVenueBundle:Offer')
         ->findAll();
-        $offersArray = $this->getAppService('util')->entitiesToArray($offers);
+        $offersArray = $this->getAppService('util')->entitiesToArray($offers, array('lang' => $lang, 'request' => $request, 'has_venue' => true));
         return $this->prepareResponse($offersArray);
     }
 
