@@ -37,6 +37,13 @@ class Category {
     /**
      * @var string
      *
+     * @ORM\Column(name="title_ar", type="string", length=255, nullable=true)
+     */
+    private $title_ar;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="alias", type="string", length=255)
      */
     private $alias;
@@ -156,5 +163,28 @@ class Category {
             'title' => $this->title
         );
         return $category;
+    }
+
+    /**
+     * Set ad
+     *
+     * @param \Dalilak\VenueBundle\Entity\Ad $ad
+     * @return Category
+     */
+    public function setAd(\Dalilak\VenueBundle\Entity\Ad $ad = null)
+    {
+        $this->ad = $ad;
+
+        return $this;
+    }
+
+    /**
+     * Get ad
+     *
+     * @return \Dalilak\VenueBundle\Entity\Ad 
+     */
+    public function getAd()
+    {
+        return $this->ad;
     }
 }

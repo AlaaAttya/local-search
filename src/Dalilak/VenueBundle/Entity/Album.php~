@@ -37,7 +37,7 @@ class Album
 
     /**
      * 
-     * @ORM\ManyToOne(targetEntity="Dalilak\VenueBundle\Entity\Venue",inversedBy="branches")
+     * @ORM\ManyToOne(targetEntity="Dalilak\VenueBundle\Entity\Venue",inversedBy="albums")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $venue;

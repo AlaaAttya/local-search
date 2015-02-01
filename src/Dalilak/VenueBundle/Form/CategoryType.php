@@ -26,6 +26,7 @@ class CategoryType extends AbstractType {
         $builder
                 ->add('title')
                 ->add('alias')
+                ->add('title_ar')
                 ->add('venues')
         ;
     }

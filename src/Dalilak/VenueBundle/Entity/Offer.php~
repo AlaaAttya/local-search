@@ -104,7 +104,7 @@ class Offer {
      * @param   string $lang
      * @return string 
      */
-    public function getTitle($lang) {
+    public function getTitle($lang = 'en') {
         if($lang == 'ar')
             return $this->title_ar;
         return $this->title;
@@ -152,10 +152,13 @@ class Offer {
      *
      * @return string 
      */
-    public function getImage($request) {
-        $image = $this->__getOffersUploadPath() . $this->image;
-        $image_full_url = str_replace('/app_dev.php', '', $request->getUriForPath($image));
-        return $image_full_url;
+    public function getImage($request = null) {
+        if($request != null){
+            $image = $this->__getOffersUploadPath() . $this->image;
+            $image_full_url = str_replace('/app_dev.php', '', $request->getUriForPath($image));    
+            return $image_full_url;
+        }
+        return $this->image;
     }
 
     /**
@@ -237,7 +240,7 @@ class Offer {
      * @param   string $lang
      * @return string 
      */
-    public function getDescription($lang) {
+    public function getDescription($lang = 'en') {
         if($lang == 'ar')
             return $this->description_ar;
         return $this->description;

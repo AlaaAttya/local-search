@@ -37,6 +37,13 @@ class Category {
     /**
      * @var string
      *
+     * @ORM\Column(name="title_ar", type="string", length=255, nullable=true)
+     */
+    private $title_ar;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="alias", type="string", length=255)
      */
     private $alias;
@@ -80,7 +87,9 @@ class Category {
      *
      * @return string 
      */
-    public function getTitle() {
+    public function getTitle($lang = 'en') {
+        if($lang == 'ar')
+            return $this->title_ar;
         return $this->title;
     }
 
@@ -149,11 +158,16 @@ class Category {
     /**
      * Retuen array representation of the current object
      */
-    public function toArray() {
+    public function toArray($params = array()) {
+
+        if(!isset($params['lang']) || empty($params['lang'])){
+            $params['lang'] = 'en';
+        }
+
         $category = array(
             'id' => $this->id,
             'alias' => $this->alias,
-            'title' => $this->title
+            'title' => $this->getTitle($params['lang'])
         );
         return $category;
     }
@@ -179,5 +193,26 @@ class Category {
     public function getAd()
     {
         return $this->ad;
+    }
+
+    /**
+     * Set title_ar
+     *
+     * @param string $titleAr
+     * @return Category
+     */
+    public function setTitleAr($titleAr) {
+        $this->title_ar = $titleAr;
+
+        return $this;
+    }
+
+    /**
+     * Get title_ar
+     *
+     * @return string 
+     */
+    public function getTitleAr() {
+        return $this->title_ar;
     }
 }

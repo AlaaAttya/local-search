@@ -37,7 +37,7 @@ class Venue {
     /**
      * @var string
      *
-     * @ORM\Column(name="name_ar", type="string", length=255)
+     * @ORM\Column(name="name_ar", type="string", length=255, nullable=true)
      */
     private $nameAr;
 
@@ -51,28 +51,28 @@ class Venue {
     /**
      * @var string
      *
-     * @ORM\Column(name="facebook", type="string", length=255)
+     * @ORM\Column(name="facebook", type="string", length=255, nullable=true)
      */
     private $facebook;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="twitter", type="string", length=255)
+     * @ORM\Column(name="twitter", type="string", length=255, nullable=true)
      */
     private $twitter;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="website", type="string", length=255)
+     * @ORM\Column(name="website", type="string", length=255, nullable=true)
      */
     private $website;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="opening_times", type="text")
+     * @ORM\Column(name="opening_times", type="text", nullable=true)
      */
     private $openingTimes;
 
@@ -86,7 +86,7 @@ class Venue {
     /**
      * @var string
      *
-     * @ORM\Column(name="services", type="text")
+     * @ORM\Column(name="services", type="text", nullable=true)
      */
     private $services;
 
@@ -118,28 +118,28 @@ class Venue {
     /**
      * @var string
      *
-     * @ORM\Column(name="address_longitude", type="string", length=255)
+     * @ORM\Column(name="address_longitude", type="string", length=255, nullable=true)
      */
     private $address_longitude;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="address_latitude", type="string", length=255)
+     * @ORM\Column(name="address_latitude", type="string", length=255, nullable=true)
      */
     private $address_latitude;
 
     /**
      * @var string
      * 
-     * @ORM\Column(name="address_text", type="text")
+     * @ORM\Column(name="address_text", type="text", nullable=true)
      */
     private $address_text;
 
     /**
      * @var string
      * 
-     * @ORM\Column(name="address_text_ar", type="text", nullable=true)
+     * @ORM\Column(name="address_text_ar", type="text", nullable=true, nullable=true)
      */
     private $address_text_ar;
 
@@ -218,7 +218,7 @@ class Venue {
      * @param   string $lang
      * @return string 
      */
-    public function getName($lang) {
+    public function getName($lang = 'en') {
         if($lang == 'ar')
             return $this->nameAr;
         return $this->name;

@@ -76,11 +76,11 @@ class APIController extends BaseController {
     /**
      * Get all categories
      * 
-     * @Route("/category")
+     * @Route("/category/{lang}")
      */
-    public function getAllCategoriesAction() {
+    public function getAllCategoriesAction($lang = 'en') {
         $categories = $this->getDoctrine()->getRepository('DalilakVenueBundle:Category')->findAll();
-        $categoriesArray = $this->getAppService('util')->entitiesToArray($categories);
+        $categoriesArray = $this->getAppService('util')->entitiesToArray($categories, array('lang' => $lang));
         return $this->prepareResponse($categoriesArray);
     }
 

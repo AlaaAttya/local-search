@@ -82,9 +82,10 @@ class Ad
      *
      * @return string 
      */
-    public function getImage()
-    {
-        return $this->image;
+    public function getImage($request) {
+        $image = $this->__getAdsUploadPath() . $this->image;
+        $image_full_url = str_replace('/app_dev.php', '', $request->getUriForPath($image));
+        return $image_full_url;
     }
 
     /**
@@ -105,8 +106,9 @@ class Ad
      *
      * @return string 
      */
-    public function getText()
-    {
+    public function getText($lang = 'en') {
+        if($lang == 'ar')
+            return $this->text_ar;
         return $this->text;
     }
 
@@ -133,4 +135,44 @@ class Ad
         return $this->textAr;
     }
     
+
+    /**
+     * Set category
+     *
+     * @param \Dalilak\VenueBundle\Entity\Category $category
+     * @return Ad
+     */
+    public function setCategory(\Dalilak\VenueBundle\Entity\Category $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \Dalilak\VenueBundle\Entity\Category 
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    protected function __getAdsUploadPath(){
+        return '/uploads/ads/';
+    }
+
+
+    public function toArray($params){
+        return array(
+            'id' => $this->id,
+            'image' => $this->getImage($params['request']),
+            'text' => $this->getText($params['lang']),
+            'category' => array(
+                'title' => $this->getCategory()->getTitle(),
+                'alias' => $this->getCategory()->getAlias()
+            )
+        );
+    }
 }
