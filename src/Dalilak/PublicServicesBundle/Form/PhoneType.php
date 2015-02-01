@@ -16,6 +16,7 @@ class PhoneType extends AbstractType
     {
         $builder
             ->add('title')
+            ->add('title_ar')
             ->add('number')
         ;
     }
