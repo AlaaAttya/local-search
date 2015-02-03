@@ -49,6 +49,17 @@ class Phone {
     private $number;
 
     /**
+     * @var ArrayCollection 
+     * 
+     * @ORM\ManyToMany(targetEntity="Dalilak\VenueBundle\Entity\Category", inversedBy="phones")
+     * @ORM\JoinTable(name="phones_categories",
+     *      joinColumns={@ORM\JoinColumn(name="venue_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")}
+     * )
+     * */
+    private $categories;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -134,4 +145,44 @@ class Phone {
         );
     }
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add categories
+     *
+     * @param \Dalilak\VenueBundle\Entity\Category $categories
+     * @return Phone
+     */
+    public function addCategory(\Dalilak\VenueBundle\Entity\Category $categories)
+    {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \Dalilak\VenueBundle\Entity\Category $categories
+     */
+    public function removeCategory(\Dalilak\VenueBundle\Entity\Category $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
 }

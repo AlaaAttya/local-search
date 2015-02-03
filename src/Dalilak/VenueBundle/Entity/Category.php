@@ -54,6 +54,12 @@ class Category {
      * */
     private $venues;
 
+    /**
+     * @var ArrayCollection 
+     * @ORM\ManyToMany(targetEntity="Dalilak\PublicServicesBundle\Entity\Phone", mappedBy="categories")
+     * */
+    private $phones;
+
 
     /**
      * @ORM\OneToOne(targetEntity="Dalilak\VenueBundle\Entity\Ad", inversedBy="category")
@@ -214,5 +220,38 @@ class Category {
      */
     public function getTitleAr() {
         return $this->title_ar;
+    }
+
+    /**
+     * Add phones
+     *
+     * @param \Dalilak\PublicServicesBundle\Entity\Phone $phones
+     * @return Category
+     */
+    public function addPhone(\Dalilak\PublicServicesBundle\Entity\Phone $phones)
+    {
+        $this->phones[] = $phones;
+
+        return $this;
+    }
+
+    /**
+     * Remove phones
+     *
+     * @param \Dalilak\PublicServicesBundle\Entity\Phone $phones
+     */
+    public function removePhone(\Dalilak\PublicServicesBundle\Entity\Phone $phones)
+    {
+        $this->phones->removeElement($phones);
+    }
+
+    /**
+     * Get phones
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPhones()
+    {
+        return $this->phones;
     }
 }

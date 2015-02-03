@@ -18,6 +18,7 @@ class PhoneType extends AbstractType
             ->add('title')
             ->add('title_ar')
             ->add('number')
+            ->add('categories')
         ;
     }
     

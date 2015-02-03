@@ -54,6 +54,12 @@ class Category {
      * */
     private $venues;
 
+    /**
+     * @var ArrayCollection 
+     * @ORM\ManyToMany(targetEntity="Dalilak\PublicServicesBundle\Entity\Phone", mappedBy="categories")
+     * */
+    private $phones;
+
 
     /**
      * @ORM\OneToOne(targetEntity="Dalilak\VenueBundle\Entity\Ad", inversedBy="category")
@@ -87,7 +93,9 @@ class Category {
      *
      * @return string 
      */
-    public function getTitle() {
+    public function getTitle($lang = 'en') {
+        if($lang == 'ar')
+            return $this->title_ar;
         return $this->title;
     }
 
@@ -156,11 +164,16 @@ class Category {
     /**
      * Retuen array representation of the current object
      */
-    public function toArray() {
+    public function toArray($params = array()) {
+
+        if(!isset($params['lang']) || empty($params['lang'])){
+            $params['lang'] = 'en';
+        }
+
         $category = array(
             'id' => $this->id,
             'alias' => $this->alias,
-            'title' => $this->title
+            'title' => $this->getTitle($params['lang'])
         );
         return $category;
     }
@@ -186,5 +199,26 @@ class Category {
     public function getAd()
     {
         return $this->ad;
+    }
+
+    /**
+     * Set title_ar
+     *
+     * @param string $titleAr
+     * @return Category
+     */
+    public function setTitleAr($titleAr) {
+        $this->title_ar = $titleAr;
+
+        return $this;
+    }
+
+    /**
+     * Get title_ar
+     *
+     * @return string 
+     */
+    public function getTitleAr() {
+        return $this->title_ar;
     }
 }

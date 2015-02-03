@@ -24,56 +24,56 @@ class Menu {
     /**
      * @var string
      *
-     * @ORM\Column(name="item_name", type="string", length=255)
+     * @ORM\Column(name="item_name", type="string", length=255, nullable=true)
      */
     private $item_name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ingerdients", type="string", length=255)
+     * @ORM\Column(name="ingerdients", type="string", length=255, nullable=true)
      */
     private $ingerdients;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="size1", type="string", length=255)
+     * @ORM\Column(name="size1", type="string", length=255, nullable=true)
      */
     private $size1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="size1_price", type="string", length=255)
+     * @ORM\Column(name="size1_price", type="string", length=255, nullable=true)
      */
     private $size1_price;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="size2", type="string", length=255)
+     * @ORM\Column(name="size2", type="string", length=255, nullable=true)
      */
     private $size2;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="size2_price", type="string", length=255)
+     * @ORM\Column(name="size2_price", type="string", length=255, nullable=true)
      */
     private $size2_price;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="size3", type="string", length=255)
+     * @ORM\Column(name="size3", type="string", length=255, nullable=true)
      */
     private $size3;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="size3_price", type="string", length=255)
+     * @ORM\Column(name="size3_price", type="string", length=255, nullable=true)
      */
     private $size3_price;
 
