@@ -219,6 +219,15 @@
             </li>
             {% endfor %}
         </ul>
+        <hr />
+        <ul class="phones" data-prototype="{{ form_widget(edit_form.phones.vars.prototype)|e }}">
+            {% for phone in edit_form.phones %}
+            <li>
+                {{form_label(phone, 'Phone')}}
+                {{form_widget(phone)}}
+            </li>
+            {% endfor %}
+        </ul>
 
         {{form_widget(edit_form._token)}}
         <button class="btn btn-primary">Update</button>

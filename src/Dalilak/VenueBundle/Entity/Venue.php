@@ -378,27 +378,6 @@ class Venue {
     }
 
     /**
-     * Set phone
-     *
-     * @param string $phone
-     * @return Venue
-     */
-    public function setPhone($phone) {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
-     * Get phone
-     *
-     * @return string 
-     */
-    public function getPhone() {
-        return $this->phone;
-    }
-
-    /**
      * Constructor
      */
     public function __construct() {
@@ -583,6 +562,7 @@ class Venue {
             'id' => $this->id,
             'name' => $this->getName($params['lang']),
             'logo' => $this->getLogo($params['request']),
+            'phones' => $this->getPhonesAsArray(),
             'email' => $this->email,
             'website' => $this->website,
             'facebook' => $this->facebook,

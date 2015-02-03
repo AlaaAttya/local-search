@@ -178,7 +178,7 @@ class Offer {
             'image' => $this->getImage($params['request'])
         );
         
-        if(isset($params['has_venue'])){
+        if(isset($params['has_venue'])) {
             $offerArray['vendor'] = $this->getVendor()->toArray(array(
                 'lang' => $params['lang'], 
                 'request' => $params['request']

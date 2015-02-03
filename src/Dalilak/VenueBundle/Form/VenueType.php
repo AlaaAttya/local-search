@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Dalilak\VenueBundle\Form\BranchType;
 use Dalilak\VenueBundle\Form\MenuType;
 use Dalilak\VenueBundle\Form\OfferType;
+use Dalilak\VenueBundle\Form\VenuePhoneType;
 
 /**
  * Venue Form
@@ -73,6 +74,17 @@ class VenueType extends AbstractType {
                     'prototype' => true,
                     'options' => array(
                         'data_class' => 'Dalilak\VenueBundle\Entity\Offer'
+                    )
+                        )
+                )
+                ->add('phones', 'collection', array(
+                    'type' => new VenuePhoneType(),
+                    'allow_add' => true,
+                    'by_reference' => false,
+                    'allow_delete' => true,
+                    'prototype' => true,
+                    'options' => array(
+                        'data_class' => 'Dalilak\VenueBundle\Entity\VenuePhone'
                     )
                         )
                 )

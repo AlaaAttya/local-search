@@ -13,11 +13,16 @@
         var $addOfferLink = $('<a href="#" class="add_menu_link">Add offer</a>');
         var $newOfferLi = $('<li></li>').append($addOfferLink);
 
+        // Setup a "add a phone" link
+        var $addPhoneLink = $('<a href="#" class="add_menu_link">Add phone</a>');
+        var $newPhoneLi = $('<li></li>').append($addPhoneLink);
+
         jQuery(document).ready(function() {
             // Get the ul that holds the collection of each item
             $collectionHolder = $('ul.barnches');
             $collectionMenuHolder = $('ul.menus');
             $collectionOfferHolder = $('ul.offers');
+            $collectionPhoneHolder = $('ul.phones');
 
             // add a delete link to all of the existing tag form li elements (branches)
             $collectionHolder.find('li').each(function() {
@@ -34,14 +39,22 @@
             	addTagFormDeleteLink($(this), 'offer');
             });
 
+            // add a delete link to all of the existing tag form li elements (phones)
+            $collectionPhoneHolder.find('li').each(function() {
+                addTagFormDeleteLink($(this), 'phone');
+            });
+
             // add the "add a branch" anchor and li to the brances ul
             $collectionHolder.append($newLinkLi);
 
             // add the "add a menu" anchor and li to the menus ul
-            $collectionMenuHolder.append($newMenuLi );
+            $collectionMenuHolder.append($newMenuLi);
 
-            // add the "add an iffer" anchor and li to the offers ul
-            $collectionOfferHolder.append($newOfferLi );
+            // add the "add an offer" anchor and li to the offers ul
+            $collectionOfferHolder.append($newOfferLi);
+
+            // add the "add a phone" anchor and li to the phones ul
+            $collectionPhoneHolder.append($newPhoneLi);
 
             // count the current form inputs we have (e.g. 2), use that as the new
             // index when inserting a new item (e.g. 2)
@@ -54,6 +67,10 @@
             // count the current form inputs we have (e.g. 2), use that as the new
             // index when inserting a new item (e.g. 2)
             $collectionOfferHolder.data('index', $collectionOfferHolder.find(':input').length);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionPhoneHolder.data('index', $collectionPhoneHolder.find(':input').length);
 
             $addTagLink.on('click', function(e) {
                 // prevent the link from creating a "#" on the URL
@@ -78,6 +95,14 @@
                 // add a new tag form (see next code block)
                 addTagForm($collectionOfferHolder, $newOfferLi, "offer");
             });
+
+            $addPhoneLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm($collectionPhoneHolder, $newPhoneLi, "phone");
+            });
         });
 
 		/**
@@ -88,6 +113,8 @@
 		 * @param 	string	$text	item type "tag, menu item, offer"
 		 */
 		 function addTagForm($collectionHolder, $newLinkLi, $text) {
+            console.log($collectionHolder.html());
+            console.log($newLinkLi.html());
             // Get the data-prototype explained earlier
             var prototype = $collectionHolder.data('prototype');
 
@@ -113,7 +140,7 @@
         /**
          * Append delete item link
          */
-         function addTagFormDeleteLink($tagFormLi, $text) {
+        function addTagFormDeleteLink($tagFormLi, $text) {
          	var $removeFormA = $('<a href="#">delete this ' + $text + '</a>');
          	$tagFormLi.append($removeFormA);
 
