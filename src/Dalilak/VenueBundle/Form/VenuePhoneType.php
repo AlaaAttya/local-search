@@ -24,7 +24,11 @@ class VenuePhoneType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('number')
+                ->add('number', 'text', array(
+                    'attr' => array(
+                        'class' => 'form-control'
+                    )
+                ))
         ;
     }
 

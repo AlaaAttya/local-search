@@ -6,14 +6,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ImageType extends AbstractType
-{
-        /**
+class ImageType extends AbstractType {
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('imageFile', 'file')
             //->add('venue')
@@ -23,8 +21,7 @@ class ImageType extends AbstractType
     /**
      * @param OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
+    public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'Dalilak\VenueBundle\Entity\Image'
         ));
@@ -33,8 +30,7 @@ class ImageType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return 'dalilak_venuebundle_image';
     }
 }

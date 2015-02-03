@@ -135,6 +135,11 @@
         </div>
 
         <div class="form-group">
+            {{form_label(form.imageFile, 'Logo')}}
+            {{form_widget(form.imageFile, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group">
             {{form_label(form.email, 'Email')}} <span class="required-element">*</span>
             {{form_widget(form.email, {'attr':{'class':'form-control'}})}}
             {{form_errors(form.email)}}

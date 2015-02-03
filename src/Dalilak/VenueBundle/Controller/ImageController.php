@@ -42,8 +42,7 @@ class ImageController extends Controller
      * @Method("POST")
      * @Template("DalilakVenueBundle:Image:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new Image();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);

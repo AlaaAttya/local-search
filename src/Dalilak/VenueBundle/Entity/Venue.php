@@ -4,6 +4,10 @@ namespace Dalilak\VenueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+
 /**
  * Venue
  *
@@ -376,6 +380,11 @@ class Venue {
             return $this->services_ar;
         return $this->services;
     }
+
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    private $imageFile;
 
     /**
      * Constructor
@@ -829,8 +838,7 @@ class Venue {
      * @param \Dalilak\VenueBundle\Entity\Album $albums
      * @return Venue
      */
-    public function addAlbum(\Dalilak\VenueBundle\Entity\Album $albums)
-    {
+    public function addAlbum(\Dalilak\VenueBundle\Entity\Album $albums) {
         $this->albums[] = $albums;
 
         return $this;
@@ -841,8 +849,7 @@ class Venue {
      *
      * @param \Dalilak\VenueBundle\Entity\Album $albums
      */
-    public function removeAlbum(\Dalilak\VenueBundle\Entity\Album $albums)
-    {
+    public function removeAlbum(\Dalilak\VenueBundle\Entity\Album $albums) {
         $this->albums->removeElement($albums);
     }
 
@@ -851,8 +858,60 @@ class Venue {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getAlbums()
-    {
+    public function getAlbums() {
         return $this->albums;
+    }
+
+    protected function getUploadRootDir() {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
+    }
+
+    protected function getUploadDir() {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/venues';
+    }
+
+    public function upload() {
+        $file = $this->getImageFile();
+        
+        // the file property can be empty if the field is not required
+        if (null === $file) {
+            return;
+        }
+        
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
+        
+        // use the original file name here but you should
+        // sanitize it at least to avoid any security issues
+        // move takes the target directory and then the
+        // target filename to move to
+        $file->move(
+            $this->getUploadRootDir(), $fileName
+            );
+        $this->logo = $fileName;
+        $this->imageFile = null;
+        $file = null;
+        $fileName = null;
+    }
+
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setImageFile(UploadedFile $file = null) {
+        $this->imageFile = $file;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getImageFile() {
+        return $this->imageFile;
     }
 }

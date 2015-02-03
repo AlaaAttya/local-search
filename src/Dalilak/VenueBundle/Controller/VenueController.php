@@ -55,6 +55,7 @@ class VenueController extends Controller {
         if ($form->isValid()) {
             
             $em = $this->getDoctrine()->getManager();
+            $entity->upload();
             $em->persist($entity);
             foreach($entity->getBranches() as $branch) {
                 $branch->setVenue($entity);

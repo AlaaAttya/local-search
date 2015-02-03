@@ -19,8 +19,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
  * @ORM\Table(name="images")
  * @ORM\Entity(repositoryClass="Dalilak\VenueBundle\Repository\ImageRepository")
  */
-class Image
-{
+class Image {
     /**
      * @var integer
      *
