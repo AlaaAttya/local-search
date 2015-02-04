@@ -3,6 +3,9 @@
 namespace Dalilak\VenueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * Offer
@@ -76,6 +79,11 @@ class Offer {
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $vendor;
+
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    private $imageFile;
 
     /**
      * Get id
@@ -177,13 +185,9 @@ class Offer {
             'valid_date' => $this->getValidDate(),
             'image' => $this->getImage($params['request'])
         );
-        
+
         if(isset($params['has_venue'])) {
-            $offerArray['vendor'] = $this->getVendor()->toArray(array(
-                'lang' => $params['lang'], 
-                'request' => $params['request']
-                )
-            );
+            $offerArray['vendor'] = $this->getVendor()->toArray($params);
         }
         return $offerArray;
     }
@@ -274,5 +278,58 @@ class Offer {
      */
     public function getDescriptionAr() {
         return $this->description_ar;
+    }
+
+        protected function getUploadRootDir() {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
+    }
+
+    protected function getUploadDir() {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/offers';
+    }
+
+    public function upload() {
+        $file = $this->getImageFile();
+        
+        // the file property can be empty if the field is not required
+        if (null === $file) {
+            return;
+        }
+        
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
+        
+        // use the original file name here but you should
+        // sanitize it at least to avoid any security issues
+        // move takes the target directory and then the
+        // target filename to move to
+        $file->move(
+            $this->getUploadRootDir(), $fileName
+            );
+        $this->image = $fileName;
+        $this->imageFile = null;
+        $file = null;
+        $fileName = null;
+    }
+
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setImageFile(UploadedFile $file = null) {
+        $this->imageFile = $file;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getImageFile() {
+        return $this->imageFile;
     }
 }

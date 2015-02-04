@@ -55,7 +55,7 @@ class OfferController extends Controller {
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $venue = $this->getDoctrine()->getRepository("DalilakVenueBundle:Venue")->find($venue_id);
-            
+            $entity->upload();
             if(!$venue) 
                 throw $this->createNotFoundException('Venue does not exist');
 
@@ -199,6 +199,7 @@ class OfferController extends Controller {
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $entity->upload();
             $em->flush();
 
             return $this->redirect($this->generateUrl('offer_edit', array('id' => $id)));

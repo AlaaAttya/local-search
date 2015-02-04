@@ -88,7 +88,7 @@ class VenueType extends AbstractType {
                     )
                         )
                 )
-                ->add('imageFile', 'file')
+                ->add('imageFile', 'file', array('required' => false))
         ;
     }
 

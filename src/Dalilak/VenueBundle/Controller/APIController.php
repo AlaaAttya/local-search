@@ -157,7 +157,11 @@ class APIController extends BaseController {
         $offers = $this->getDoctrine()
         ->getRepository('DalilakVenueBundle:Offer')
         ->findBy(array('vendor' => $venue_id));
-        $offersArray = $this->getAppService('util')->entitiesToArray($offers, array('lang' => $lang, 'request' => $request));
+        $offersArray = $this->getAppService('util')->entitiesToArray($offers, array(
+                'lang' => $lang, 
+                'request' => $request,
+            )
+        );
         return $this->prepareResponse($offersArray);
     }
 
@@ -172,7 +176,12 @@ class APIController extends BaseController {
         $offer = $this->getDoctrine()
                 ->getRepository('DalilakVenueBundle:Offer')
                 ->findById($id);
-        $offerArray = $this->getAppService('util')->entitiesToArray($offer, array('lang' => $lang, 'request' => $request));
+        $offerArray = $this->getAppService('util')->entitiesToArray($offer, array(
+                'lang' => $lang, 
+                'request' => $request,
+                'has_venue' => true
+            )
+        );
         return $this->prepareResponse($offerArray);
     }
 

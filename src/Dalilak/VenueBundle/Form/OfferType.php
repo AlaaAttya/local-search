@@ -23,8 +23,9 @@ class OfferType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('title', 'text', array('required' => false))
+            ->add('imageFile', 'file', array('required' => false))
             ->add('title_ar', 'text', array('required' => false))
-            ->add('validDate', 'date', array('required' => false))
+            ->add('validDate', 'date', array('required' => true))
             ->add('description', 'text', array('required' => false))
             ->add('description_ar', 'text', array('required' => false))
            // ->add('vendor')
