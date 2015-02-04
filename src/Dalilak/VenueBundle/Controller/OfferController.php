@@ -13,10 +13,15 @@ use Dalilak\VenueBundle\Form\OfferType;
 /**
  * Offer controller.
  *
+ * @author Alaa Attya <alaa.attya91@gmail.com> 
+ * @package Dalilak.VenueBundle.Controller
+ * @version 1.0
+ * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @category Controller
+ *
  * @Route("/offer")
  */
-class OfferController extends Controller
-{
+class OfferController extends Controller {
 
     /**
      * Lists all Offer entities.
@@ -25,8 +30,7 @@ class OfferController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('DalilakVenueBundle:Offer')->findAll();
@@ -35,21 +39,25 @@ class OfferController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Offer entity.
      *
-     * @Route("/", name="offer_create")
+     * @Route("/{venue_id}/", name="offer_create")
      * @Method("POST")
      * @Template("DalilakVenueBundle:Offer:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request, $venue_id) {
         $entity = new Offer();
-        $form = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity, array('venue_id' => $venue_id));
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $venue = $this->getDoctrine()->getRepository("DalilakVenueBundle:Venue")->find($venue_id);
+            if(!empty($venue)) {
+                $entity->setVendor($venue);
+            }
             $em->persist($entity);
             $em->flush();
 
@@ -69,10 +77,9 @@ class OfferController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Offer $entity)
-    {
+    private function createCreateForm(Offer $entity, $route_params) {
         $form = $this->createForm(new OfferType(), $entity, array(
-            'action' => $this->generateUrl('offer_create'),
+            'action' => $this->generateUrl('offer_create', array('venue_id' => $route_params['venue_id'])),
             'method' => 'POST',
         ));
 
@@ -84,14 +91,13 @@ class OfferController extends Controller
     /**
      * Displays a form to create a new Offer entity.
      *
-     * @Route("/new", name="offer_new")
+     * @Route("/{venue_id}/new", name="offer_new")
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
-    {
+    public function newAction($venue_id) {
         $entity = new Offer();
-        $form   = $this->createCreateForm($entity);
+        $form   = $this->createCreateForm($entity, array('venue_id' => $venue_id));
 
         return array(
             'entity' => $entity,
@@ -106,8 +112,7 @@ class OfferController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('DalilakVenueBundle:Offer')->find($id);
@@ -131,8 +136,7 @@ class OfferController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('DalilakVenueBundle:Offer')->find($id);
@@ -158,8 +162,7 @@ class OfferController extends Controller
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Offer $entity)
-    {
+    private function createEditForm(Offer $entity) {
         $form = $this->createForm(new OfferType(), $entity, array(
             'action' => $this->generateUrl('offer_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -176,8 +179,7 @@ class OfferController extends Controller
      * @Method("PUT")
      * @Template("DalilakVenueBundle:Offer:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('DalilakVenueBundle:Offer')->find($id);
@@ -208,8 +210,7 @@ class OfferController extends Controller
      * @Route("/{id}", name="offer_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -235,8 +236,7 @@ class OfferController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('offer_delete', array('id' => $id)))
             ->setMethod('DELETE')
