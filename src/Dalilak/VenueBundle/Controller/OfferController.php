@@ -55,9 +55,11 @@ class OfferController extends Controller {
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $venue = $this->getDoctrine()->getRepository("DalilakVenueBundle:Venue")->find($venue_id);
-            if(!empty($venue)) {
-                $entity->setVendor($venue);
-            }
+            
+            if(!$venue) 
+                throw $this->createNotFoundException('Venue does not exist');
+
+            $entity->setVendor($venue);
             $em->persist($entity);
             $em->flush();
 
@@ -96,6 +98,11 @@ class OfferController extends Controller {
      * @Template()
      */
     public function newAction($venue_id) {
+        
+        $venue = $this->getDoctrine()->getRepository("DalilakVenueBundle:Venue")->find($venue_id);          
+        if(!$venue) 
+            throw $this->createNotFoundException('Venue does not exist');
+
         $entity = new Offer();
         $form   = $this->createCreateForm($entity, array('venue_id' => $venue_id));
 
@@ -113,10 +120,9 @@ class OfferController extends Controller {
      * @Template()
      */
     public function showAction($id) {
+
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('DalilakVenueBundle:Offer')->find($id);
-
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Offer entity.');
         }
@@ -137,8 +143,8 @@ class OfferController extends Controller {
      * @Template()
      */
     public function editAction($id) {
-        $em = $this->getDoctrine()->getManager();
 
+        $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('DalilakVenueBundle:Offer')->find($id);
 
         if (!$entity) {
