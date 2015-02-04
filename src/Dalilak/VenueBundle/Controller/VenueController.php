@@ -192,6 +192,7 @@ class VenueController extends Controller {
 
         return $form;
     }
+    
     /**
      * Edits an existing Venue entity.
      *
@@ -203,7 +204,7 @@ class VenueController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('DalilakVenueBundle:Venue')->find($id);
-
+        
         $originalBranches = new \Doctrine\Common\Collections\ArrayCollection();
         $originalMenus = new \Doctrine\Common\Collections\ArrayCollection();
         $originalOffers = new \Doctrine\Common\Collections\ArrayCollection();
@@ -238,7 +239,7 @@ class VenueController extends Controller {
         $editForm->handleRequest($request);
         
         if ($editForm->isValid()) {
-            
+            $entity->upload();
             // Fixing the null venu issue
             // for the new added branches
             foreach ($entity->getBranches() as $branch) {
