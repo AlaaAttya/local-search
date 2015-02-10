@@ -1,0 +1,32 @@
+{% extends 'DalilakVenueBundle:Layouts:base.html.twig' %}
+
+{% block title %}Edit album{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+    <!-- Encapculate the add images logic -->
+    {% include 'DalilakVenueBundle:scripts:image_upload.html.twig' %}
+{% endblock %}
+
+{% block content -%}
+    <h1>Create album</h1>
+    
+    <form action="{{path('album_create', {'venue_id':app.request.attributes.get('venue_id')})}}" {{ form_enctype(form)}} style="min-height: 2400px;height: 100%;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
+
+        <div class="form-group">
+            {{form_label(form.description, 'Description')}}
+            {{form_widget(form.description, {'attr':{'class':'form-control'}})}}
+        </div>
+
+        <div class="form-group">
+            {{form_label(form.description_ar, 'Arabic Description')}}
+            {{form_widget(form.description_ar, {'attr':{'class':'form-control'}})}}
+        </div>
+        
+        <ul class="images" data-prototype="{{ form_widget(form.images.vars.prototype)|e }}">
+
+        </ul>
+
+        {{form_widget(form._token)}}
+        <button class="btn btn-primary">Create</button>
+    </form>
+{% endblock %}

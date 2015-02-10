@@ -30,6 +30,20 @@ class Album
     /**
      * @var string
      *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description_ar", type="text", nullable=true)
+     */
+    private $description_ar;
+
+    /**
+     * @var string
+     *
      * 
      * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Image", mappedBy="album" ,cascade={"persist"})
      */
@@ -127,10 +141,62 @@ class Album
     }
 
     public function toArray($params){
+        if(!isset($params['lang'])) {
+            $params['lang'] = 'en';
+        }
+
         return array(
             'id' => $this->id,
             'venue_id' => $this->getVenue()->getId(),
+            'description' => $this->getDescription($param['lang']),
             'images' => $this->getImagesAsArray(array('request' => $params['request']))
         );
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Album
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription($lang = 'en') {
+        if($lang == 'ar')
+            return $this->description_ar;
+        return $this->description;
+    }
+
+    /**
+     * Set description_ar
+     *
+     * @param string $descriptionAr
+     * @return Album
+     */
+    public function setDescriptionAr($descriptionAr)
+    {
+        $this->description_ar = $descriptionAr;
+
+        return $this;
+    }
+
+    /**
+     * Get description_ar
+     *
+     * @return string 
+     */
+    public function getDescriptionAr()
+    {
+        return $this->description_ar;
     }
 }

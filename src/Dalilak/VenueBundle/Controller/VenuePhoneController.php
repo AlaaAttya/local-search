@@ -13,10 +13,16 @@ use Dalilak\VenueBundle\Form\VenuePhoneType;
 /**
  * VenuePhone controller.
  *
+ *
+ * @author Alaa Attya <alaa.attya91@gmail.com> 
+ * @package Dalilak.VenueBundle.Controller
+ * @version 1.0
+ * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @category Controller
+ *
  * @Route("/venuephone")
  */
-class VenuePhoneController extends Controller
-{
+class VenuePhoneController extends Controller {
 
     /**
      * Lists all VenuePhone entities.
@@ -25,8 +31,7 @@ class VenuePhoneController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('DalilakVenueBundle:VenuePhone')->findAll();
@@ -35,6 +40,7 @@ class VenuePhoneController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new VenuePhone entity.
      *
@@ -42,8 +48,7 @@ class VenuePhoneController extends Controller
      * @Method("POST")
      * @Template("DalilakVenueBundle:VenuePhone:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new VenuePhone();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -69,8 +74,7 @@ class VenuePhoneController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(VenuePhone $entity)
-    {
+    private function createCreateForm(VenuePhone $entity) {
         $form = $this->createForm(new VenuePhoneType(), $entity, array(
             'action' => $this->generateUrl('venuephone_create'),
             'method' => 'POST',
@@ -88,8 +92,7 @@ class VenuePhoneController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
-    {
+    public function newAction() {
         $entity = new VenuePhone();
         $form   = $this->createCreateForm($entity);
 
@@ -106,8 +109,7 @@ class VenuePhoneController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('DalilakVenueBundle:VenuePhone')->find($id);
@@ -131,8 +133,7 @@ class VenuePhoneController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('DalilakVenueBundle:VenuePhone')->find($id);
@@ -152,14 +153,13 @@ class VenuePhoneController extends Controller
     }
 
     /**
-    * Creates a form to edit a VenuePhone entity.
-    *
-    * @param VenuePhone $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(VenuePhone $entity)
-    {
+     * Creates a form to edit a VenuePhone entity.
+     *
+     * @param VenuePhone $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(VenuePhone $entity) {
         $form = $this->createForm(new VenuePhoneType(), $entity, array(
             'action' => $this->generateUrl('venuephone_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -169,6 +169,7 @@ class VenuePhoneController extends Controller
 
         return $form;
     }
+    
     /**
      * Edits an existing VenuePhone entity.
      *
@@ -176,8 +177,7 @@ class VenuePhoneController extends Controller
      * @Method("PUT")
      * @Template("DalilakVenueBundle:VenuePhone:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('DalilakVenueBundle:VenuePhone')->find($id);
@@ -202,14 +202,14 @@ class VenuePhoneController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+    
     /**
      * Deletes a VenuePhone entity.
      *
      * @Route("/{id}", name="venuephone_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -235,8 +235,7 @@ class VenuePhoneController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('venuephone_delete', array('id' => $id)))
             ->setMethod('DELETE')

@@ -32,7 +32,7 @@ class Image {
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255, nullable=true)
      */
     private $title;
 
@@ -150,7 +150,7 @@ class Image {
     protected function getUploadDir() {
         // get rid of the __DIR__ so it doesn't screw up
         // when displaying uploaded doc/image in the view.
-        return 'uploads/venues';
+        return 'uploads/venues/albums';
     }
 
     public function upload() {
@@ -161,7 +161,7 @@ class Image {
             return;
         }
         
-        $fileName = time() . '.' . $file->getClientOriginalExtension();
+        $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
         
         // use the original file name here but you should
         // sanitize it at least to avoid any security issues
@@ -169,8 +169,11 @@ class Image {
         // target filename to move to
         $file->move(
             $this->getUploadRootDir(), $fileName
-            );
+        );
         $this->title = $fileName;
+        unset($this->imageFile);
+        unset($file);
+        unset($fileName);
         $this->imageFile = null;
         $file = null;
         $fileName = null;
@@ -237,7 +240,7 @@ class Image {
      * @return string 
      */
     public function getImageName($request) {
-        $image = $this->__getImageUploadPath() . $this->image_name;
+        $image = $this->__getImageUploadPath() . $this->title;
         $image_full_url = str_replace('/app_dev.php', '', $request->getUriForPath($image));
         return $image_full_url;
     }

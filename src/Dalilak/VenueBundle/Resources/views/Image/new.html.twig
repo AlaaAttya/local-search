@@ -1,15 +1,24 @@
-{% extends '::base.html.twig' %}
+{% extends 'DalilakVenueBundle:Layouts:base.html.twig' %}
 
-{% block body -%}
+{% block title %}Upload image{% endblock %}
+{% block scripts %}{% endblock %}
+
+{% block content -%}
     <h1>Image creation</h1>
 
-    {{ form(form) }}
+    <form action="{{path('image_create')}}" {{ form_enctype(form)}} style="min-height: 300px;height: 100%;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
+    	
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('image') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+    	{{ form_widget(form.imageFile, {'full_name': form.imageFile.vars.full_name ~ '[]' }) }}
+    	{{form_widget(form._token)}}
+        <button class="btn btn-primary">Create</button>
+    </form>
+    
+    <ul class="record_actions">
+	    <li>
+	        <a href="{{ path('image') }}">
+	            Back to the list
+	        </a>
+	    </li>
+	</ul>
 {% endblock %}

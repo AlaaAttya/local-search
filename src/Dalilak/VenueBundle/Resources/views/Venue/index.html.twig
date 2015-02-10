@@ -49,6 +49,9 @@
                                 <a href="{{ path('venue_show', { 'id': entity.id }) }}" class="btn btn-primary">show</a>
                             </li>
                             <li class="action-align">
+                                <a href="{{ path('album_new', { 'venue_id': entity.id }) }}" class="btn btn-success">Add album</a>
+                            </li>
+                            <li class="action-align">
                                 <a href="{{ path('venue_edit', { 'id': entity.id }) }}" class="btn btn-success">edit</a>
                             </li>
                         </ul>

@@ -13,10 +13,16 @@ use Dalilak\VenueBundle\Form\MenuType;
 /**
  * Menu controller.
  *
+ *
+ * @author Alaa Attya <alaa.attya91@gmail.com> 
+ * @package Dalilak.VenueBundle.Controller
+ * @version 1.0
+ * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @category Controller
+ *
  * @Route("/menue") 
  */
-class MenuController extends Controller
-{
+class MenuController extends Controller {
 
     /**
      * Lists all Menu entities.
@@ -25,8 +31,7 @@ class MenuController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('DalilakVenueBundle:Menu')->findAll();
@@ -35,6 +40,7 @@ class MenuController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Menu entity.
      *
@@ -42,8 +48,7 @@ class MenuController extends Controller
      * @Method("POST")
      * @Template("DalilakVenueBundle:Menu:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new Menu();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -69,8 +74,7 @@ class MenuController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Menu $entity)
-    {
+    private function createCreateForm(Menu $entity) {
         $form = $this->createForm(new MenuType(), $entity, array(
             'action' => $this->generateUrl('menu_create'),
             'method' => 'POST',
@@ -95,7 +99,7 @@ class MenuController extends Controller
         $venue = $em->getRepository('DalilakVenueBundle:Venue')->find($venue_id);
         $menue_items = array();
         if (!$venue) {
-            throw $this->createNotFoundException('Unable to find Menu entity.');
+            throw $this->createNotFoundException('Unable to find venue entity.');
         } else {
             $menue_items = $venue->getMenus();
         }
@@ -118,8 +122,7 @@ class MenuController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('DalilakVenueBundle:Menu')->find($id);
@@ -143,8 +146,7 @@ class MenuController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('DalilakVenueBundle:Menu')->find($id);
@@ -164,14 +166,13 @@ class MenuController extends Controller
     }
 
     /**
-    * Creates a form to edit a Menu entity.
-    *
-    * @param Menu $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Menu $entity)
-    {
+     * Creates a form to edit a Menu entity.
+     *
+     * @param Menu $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Menu $entity) {
         $form = $this->createForm(new MenuType(), $entity, array(
             'action' => $this->generateUrl('menu_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -181,6 +182,7 @@ class MenuController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Menu entity.
      *
@@ -188,8 +190,7 @@ class MenuController extends Controller
      * @Method("PUT")
      * @Template("DalilakVenueBundle:Menu:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('DalilakVenueBundle:Menu')->find($id);
@@ -214,14 +215,14 @@ class MenuController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Menu entity.
      *
      * @Route("/{id}", name="menu_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -247,8 +248,7 @@ class MenuController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('menu_delete', array('id' => $id)))
             ->setMethod('DELETE')

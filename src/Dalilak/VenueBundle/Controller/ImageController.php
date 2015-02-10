@@ -13,10 +13,16 @@ use Dalilak\VenueBundle\Form\ImageType;
 /**
  * Image controller.
  *
+ *
+ * @author Alaa Attya <alaa.attya91@gmail.com> 
+ * @package Dalilak.VenueBundle.Controller
+ * @version 1.0
+ * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @category Controller
+ *
  * @Route("/image")
  */
-class ImageController extends Controller
-{
+class ImageController extends Controller {
 
     /**
      * Lists all Image entities.
@@ -25,8 +31,7 @@ class ImageController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('DalilakVenueBundle:Image')->findAll();
@@ -35,6 +40,7 @@ class ImageController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Image entity.
      *
@@ -49,6 +55,7 @@ class ImageController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            var_dump(count($entity));die;
             $entity->upload();
             $em->persist($entity);
             $em->flush();
