@@ -442,4 +442,14 @@ class VenueController extends Controller {
             'redirect_route' => 'venue_add_offers'
         );
     }
+
+    /**
+     * Show push notification form
+     *
+     * @Route("/push/")
+     * @Template("DalilakVenueBundle:Push:index.html.twig")
+     */
+    public function push_notificationAction() {
+        return array();
+    }
 }

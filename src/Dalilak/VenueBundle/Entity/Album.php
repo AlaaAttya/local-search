@@ -45,7 +45,7 @@ class Album
      * @var string
      *
      * 
-     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Image", mappedBy="album" ,cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Image", mappedBy="album", cascade={"persist", "remove"})
      */
     private $images;
 

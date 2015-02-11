@@ -21,14 +21,14 @@ class AlbumController extends Controller {
     /**
      * Lists all Album entities.
      *
-     * @Route("/", name="album")
+     * @Route("/venue/{venue_id}", name="album")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction() {
+    public function indexAction($venue_id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('DalilakVenueBundle:Album')->findAll();
+        $entities = $em->getRepository('DalilakVenueBundle:Album')->findBy(array('venue' => $venue_id));
 
         return array(
             'entities' => $entities,
@@ -141,11 +141,18 @@ class AlbumController extends Controller {
             throw $this->createNotFoundException('Unable to find Album entity.');
         }
 
+        $images = array();
+        $request = $this->getRequest();
+        foreach ($entity->getImages() as $image) {
+            $images[] = $image->toArray(array('request' => $request));
+        }
+
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+            'images'      => $images
         );
     }
 
@@ -277,7 +284,7 @@ class AlbumController extends Controller {
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('album'));
+        return $this->redirect($this->generateUrl('venue'));
     }
 
     /**
