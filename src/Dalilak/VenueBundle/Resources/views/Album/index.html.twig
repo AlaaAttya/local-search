@@ -1,12 +1,20 @@
-{% extends '::base.html.twig' %}
+{% extends 'DalilakVenueBundle:Layouts:base.html.twig' %}
+{% block scripts %}
+    {{ parent() }}
+{% endblock %}
 
-{% block body -%}
+{% block styles %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content -%}
     <h1>Album list</h1>
 
-    <table class="records_list">
+    <table class="records_list table table-striped">
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Venue</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -14,6 +22,7 @@
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('album_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td><a href="{{ path('venue_show', {'id': entity.venue.id}) }}">{{ entity.venue }}</a></td>
                 <td>
                 <ul>
                     <li>

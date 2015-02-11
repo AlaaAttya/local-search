@@ -103,7 +103,7 @@ class Venue {
     /**
      * @var string
      *
-     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\VenuePhone", mappedBy="venue" ,cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\VenuePhone", mappedBy="venue" ,cascade={"all", "remove"})
      */
     private $phones;
 
@@ -150,7 +150,7 @@ class Venue {
      * @var string
      *
      * 
-     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Branch", mappedBy="venue" ,cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Branch", mappedBy="venue" ,cascade={"persist", "remove"})
      */
     private $branches;
 
@@ -167,7 +167,7 @@ class Venue {
      * @var string
      *
      * 
-     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Menu", mappedBy="venue" ,cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Menu", mappedBy="venue" ,cascade={"persist", "remove"})
      */
     private $menus;
 
@@ -175,7 +175,7 @@ class Venue {
      * @var string
      *
      * 
-     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Offer", mappedBy="vendor" ,cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Offer", mappedBy="vendor" ,cascade={"persist", "remove"})
      */
     private $offers;
 
@@ -183,7 +183,7 @@ class Venue {
      * @var string
      *
      * 
-     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Album", mappedBy="venue" ,cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Dalilak\VenueBundle\Entity\Album", mappedBy="venue" ,cascade={"persist", "remove"})
      */
     private $albums;
 
@@ -826,6 +826,9 @@ class Venue {
      * @return string 
      */
     public function getLogo($request) {
+        if($this->logo == null)
+            return '';
+        
         $logo = $this->__getLogoUploadPath() . $this->logo;
         $logo_full_url = str_replace('/app_dev.php', '', $request->getUriForPath($logo));
         return $logo_full_url;

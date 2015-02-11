@@ -53,7 +53,7 @@ class Image {
      * Image or logo
      * @var string
      *
-     * @ORM\Column(name="venue", type="string", length=255, nullable=true)
+     * @ORM\Column(name="imageType", type="string", length=255, nullable=true)
      */
     private $imageType;
 

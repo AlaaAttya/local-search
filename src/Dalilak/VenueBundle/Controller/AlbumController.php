@@ -25,10 +25,13 @@ class AlbumController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function indexAction($venue_id) {
+    public function indexAction($venue_id = null) {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('DalilakVenueBundle:Album')->findBy(array('venue' => $venue_id));
+        if($venue_id != null)
+            $entities = $em->getRepository('DalilakVenueBundle:Album')->findBy(array('venue' => $venue_id));
+        else
+            $entities = $em->getRepository('DalilakVenueBundle:Album')->findAll();
 
         return array(
             'entities' => $entities,

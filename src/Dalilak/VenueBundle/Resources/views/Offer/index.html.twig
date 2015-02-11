@@ -1,10 +1,17 @@
-{% extends '::base.html.twig' %}
+{% extends 'DalilakVenueBundle:Layouts:base.html.twig' %}
+{% block scripts %}
+    {{ parent() }}
+{% endblock %}
 
-{% block body -%}
+{% block styles %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content -%}
     <h1>Offer list</h1>
 
-    <table class="records_list"
->        <thead>
+    <table class="records_list table table-striped">        
+        <thead>
             <tr>
                 <th>Id</th>
                 <th>Title</th>
@@ -21,7 +28,7 @@
                 <td>{{ entity.title }}</td>
                 <td>{% if entity.validDate %}{{ entity.validDate|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ entity.image }}</td>
-                <td>{{ entity.vendor }}</td>
+                <td><a href="{{ path('venue_show', {'id': entity.vendor.id}) }}">{{ entity.vendor }}</a></td>
                 <td>
                 <ul>
                     <li>
@@ -38,10 +45,11 @@
     </table>
 
         <ul>
-        <li>
+        {#<li>
+            
             <a href="{{ path('offer_new', {'venue_id': app.request.attributes.get('venue_id')}) }}">
                 Create a new entry
             </a>
-        </li>
+        </li>#}
     </ul>
     {% endblock %}
