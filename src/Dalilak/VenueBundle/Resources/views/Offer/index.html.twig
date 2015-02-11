@@ -25,7 +25,7 @@
                 <td>
                 <ul>
                     <li>
-                        <a href="{{ path('offer_show', { 'id': entity.id }) }}">show</a>
+                        <!--<a href="{{ path('offer_show', { 'id': entity.id }) }}">show</a>-->
                     </li>
                     <li>
                         <a href="{{ path('offer_edit', { 'id': entity.id }) }}">edit</a>
@@ -39,7 +39,7 @@
 
         <ul>
         <li>
-            <a href="{{ path('offer_new') }}">
+            <a href="{{ path('offer_new', {'venue_id': app.request.attributes.get('venue_id')}) }}">
                 Create a new entry
             </a>
         </li>

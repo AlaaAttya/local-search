@@ -13,7 +13,7 @@
 {% block content -%}
     <h1>Offer creation</h1>
 
-    <form action="{{path('offer_create', {'venue_id':app.request.attributes.get('venue_id')})}}" {{ form_enctype(form)}} style="min-height: 2400px;height: 100%;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
+    <form action="{{path('offer_create', {'venue_id':app.request.attributes.get('venue_id')})}}" {{ form_enctype(form)}} style="min-height: 1000px;height: 100%;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
     	<div class="form-group">
             {{form_label(form.title, 'Title')}}
             {{form_widget(form.title, {'attr':{'class':'form-control'}})}}
@@ -50,7 +50,7 @@
 
     <ul class="record_actions">
     	<li>
-        	<a href="{{ path('offer') }}">
+        	<a href="{{ path('offer', {'venue_id':app.request.attributes.get('venue_id')}) }}">
             	Back to the list
         	</a>
     	</li>

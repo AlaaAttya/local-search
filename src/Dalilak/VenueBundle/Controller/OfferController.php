@@ -26,14 +26,14 @@ class OfferController extends Controller {
     /**
      * Lists all Offer entities.
      *
-     * @Route("/", name="offer")
+     * @Route("/venue/{venue_id}/", name="offer")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction() {
+    public function indexAction($venue_id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('DalilakVenueBundle:Offer')->findAll();
+        $entities = $em->getRepository('DalilakVenueBundle:Offer')->findBy(array('vendor' => $venue_id));
 
         return array(
             'entities' => $entities,

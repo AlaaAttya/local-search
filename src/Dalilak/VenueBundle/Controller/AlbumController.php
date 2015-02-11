@@ -169,7 +169,7 @@ class AlbumController extends Controller {
         $images = array();
         $request = $this->getRequest();
         foreach ($entity->getImages() as $image) {
-            $images[] = $image->getImageName($request);
+            $images[] = $image->toArray(array('request' => $request));
         }
 
         $editForm = $this->createEditForm($entity);
