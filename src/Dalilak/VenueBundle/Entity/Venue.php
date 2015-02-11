@@ -47,7 +47,7 @@ class Venue {
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255)
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
     private $email;
 
@@ -193,6 +193,13 @@ class Venue {
      * @ORM\Column(name="logo", type="text", nullable=true)
      */
     private $logo;
+
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="priority", type="text", nullable=true)
+     */
+    private $priority;
 
     /**
      * Get id
@@ -568,6 +575,7 @@ class Venue {
 
         $venue = array(
             'id' => $this->id,
+            'priority' => $this->priority,
             'name' => $this->getName($params['lang']),
             'logo' => $this->getLogo($params['request']),
             'phones' => $this->getPhonesAsArray(),
@@ -828,7 +836,7 @@ class Venue {
     public function getLogo($request) {
         if($this->logo == null)
             return '';
-        
+
         $logo = $this->__getLogoUploadPath() . $this->logo;
         $logo_full_url = str_replace('/app_dev.php', '', $request->getUriForPath($logo));
         return $logo_full_url;
@@ -915,5 +923,28 @@ class Venue {
      */
     public function getImageFile() {
         return $this->imageFile;
+    }
+
+    /**
+     * Set priority
+     *
+     * @param string $priority
+     * @return Venue
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+
+        return $this;
+    }
+
+    /**
+     * Get priority
+     *
+     * @return string 
+     */
+    public function getPriority()
+    {
+        return $this->priority;
     }
 }

@@ -116,6 +116,12 @@
 
     <form action="{{path('venue_update', {'id':app.request.attributes.get('id')})}}" {{ form_enctype(edit_form)}} style="min-height: 2400px;height: 100%;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
         <input type="hidden" name="_method" value="PUT">
+        
+        <div class="form-group">
+            {{form_label(edit_form.priority, 'Priority')}}
+            {{form_widget(edit_form.priority, {'attr':{'class':'form-control'}})}}
+        </div>
+
         <div class="form-group">
             {{form_label(edit_form.name, 'Name')}}
             {{form_widget(edit_form.name, {'attr':{'class':'form-control'}})}}
@@ -130,6 +136,10 @@
             {{form_label(edit_form.imageFile, 'Logo')}}
             {{form_widget(edit_form.imageFile, {'attr':{'class':'form-control'}})}}
         </div>
+        {% if logo is not null %}
+            <img src="{{ logo }}" width="200" />
+            <a href="{{ path('delete-logo', {'venue_id':app.request.attributes.get('id')}) }}" class="btn btn-primary">delete logo</a>
+        {% endif %}
 
         <div class="form-group">
             {{form_label(edit_form.email, 'Email')}}

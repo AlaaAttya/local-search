@@ -30,7 +30,8 @@ class VenueType extends AbstractType {
         $builder
                 ->add('name', 'text', array('required' => true))
                 ->add('nameAr', 'text', array('required' => false))
-                ->add('email', 'email', array('required' => true))
+                ->add('email', 'email', array('required' => false))
+                ->add('priority', 'text', array('required' => false))
                 ->add('facebook', 'text', array('required' => false))
                 ->add('twitter', 'text', array('required' => false))
                 ->add('website', 'text', array('required' => false))

@@ -167,11 +167,13 @@ class VenueController extends Controller {
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
+        $request = $this->getRequest();
 
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'logo' => $entity->getLogo($request)
         );
     }
 
@@ -446,10 +448,26 @@ class VenueController extends Controller {
     /**
      * Show push notification form
      *
-     * @Route("/push/")
+     * @Route("/push/", name="push_notification")
      * @Template("DalilakVenueBundle:Push:index.html.twig")
      */
     public function push_notificationAction() {
         return array();
+    }
+
+    /**
+     * Delete venue logo
+     *
+     * @Route("{venue_id}/logo/delete", name="delete-logo")
+     */
+    public function delete_logoAction($venue_id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('DalilakVenueBundle:Venue')->find($venue_id);
+        $entity->setLogo(null);
+        $em->persist($entity);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('venue_edit', array('id' => $venue_id)));
     }
 }

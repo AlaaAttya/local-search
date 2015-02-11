@@ -124,6 +124,12 @@
     <h1>Venue creation</h1>
 
     <form action="{{path('venue_create')}}" {{ form_enctype(form)}} style="min-height: 2400px;height: 100%;padding: 70px" method="post" role="form" class="form-horizontal col-md-12">
+        
+        <div class="form-group">
+            {{form_label(form.priority, 'Priority')}}
+            {{form_widget(form.priority, {'attr':{'class':'form-control'}})}}
+        </div>
+
         <div class="form-group">
             {{form_label(form.name, 'Name')}} <span class="required-element">*</span>
             {{form_widget(form.name, {'attr':{'class':'form-control'}})}}
@@ -140,7 +146,7 @@
         </div>
 
         <div class="form-group">
-            {{form_label(form.email, 'Email')}} <span class="required-element">*</span>
+            {{form_label(form.email, 'Email')}}
             {{form_widget(form.email, {'attr':{'class':'form-control'}})}}
             {{form_errors(form.email)}}
         </div>
