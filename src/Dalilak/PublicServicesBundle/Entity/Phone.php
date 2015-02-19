@@ -53,7 +53,7 @@ class Phone {
      * 
      * @ORM\ManyToMany(targetEntity="Dalilak\VenueBundle\Entity\Category", inversedBy="phones")
      * @ORM\JoinTable(name="phones_categories",
-     *      joinColumns={@ORM\JoinColumn(name="venue_id", referencedColumnName="id")},
+     *      joinColumns={@ORM\JoinColumn(name="phone_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")}
      * )
      * */
@@ -141,15 +141,28 @@ class Phone {
 
         return array(
             'title' => $this->getTitle($params['lang']),
-            'number' => $this->number
+            'number' => $this->number,
+            'categories' => $this->getCategoriesAsArray($params)
         );
+    }
+
+    /**
+     * Get categories as Array
+     * 
+     * @return array
+     */
+    public function getCategoriesAsArray($params) {
+        $categories = array();
+        foreach ($this->categories as $category) {
+            $categories[] = $category->toArray($params);
+        }
+        return $categories;
     }
 
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -159,8 +172,7 @@ class Phone {
      * @param \Dalilak\VenueBundle\Entity\Category $categories
      * @return Phone
      */
-    public function addCategory(\Dalilak\VenueBundle\Entity\Category $categories)
-    {
+    public function addCategory(\Dalilak\VenueBundle\Entity\Category $categories) {
         $this->categories[] = $categories;
 
         return $this;
@@ -171,8 +183,7 @@ class Phone {
      *
      * @param \Dalilak\VenueBundle\Entity\Category $categories
      */
-    public function removeCategory(\Dalilak\VenueBundle\Entity\Category $categories)
-    {
+    public function removeCategory(\Dalilak\VenueBundle\Entity\Category $categories) {
         $this->categories->removeElement($categories);
     }
 
@@ -181,8 +192,7 @@ class Phone {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getCategories()
-    {
+    public function getCategories() {
         return $this->categories;
     }
 }
