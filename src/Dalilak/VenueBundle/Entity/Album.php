@@ -146,7 +146,7 @@ class Album
         return array(
             'id' => $this->id,
             'venue_id' => $this->getVenue()->getId(),
-            'description' => $this->getDescription($param['lang']),
+            'description' => $this->getDescription($params['lang']),
             'images' => $this->getImagesAsArray(array('request' => $params['request']))
         );
     }
