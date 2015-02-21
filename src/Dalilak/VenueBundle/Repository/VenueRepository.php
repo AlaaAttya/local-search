@@ -35,6 +35,7 @@ class VenueRepository extends EntityRepository {
                             ->setMaxResults($limit)
                             ->setParameter('category_alias', "%$category_alias%")
                             ->setParameter('venue_id', $last_id)
+                            ->orderBy('venue.priority')
                             ->getQuery()
                             ->getResult();
         } else {
@@ -44,6 +45,7 @@ class VenueRepository extends EntityRepository {
                             )
                             ->setMaxResults($limit)
                             ->setParameter('category_alias', "%$category_alias%")
+                            ->orderBy('venue.priority')
                             ->getQuery()
                             ->getResult();
         }
@@ -66,6 +68,7 @@ class VenueRepository extends EntityRepository {
                             ->setMaxResults($limit)
                             ->setParameter('category_id', $category_id)
                             ->setParameter('venue_id', $last_id)
+                            ->orderBy('venue.priority')
                             ->getQuery()
                             ->getResult();
         } else {
@@ -75,6 +78,7 @@ class VenueRepository extends EntityRepository {
                             )
                             ->setMaxResults($limit)
                             ->setParameter('category_id', $category_id)
+                            ->orderBy('venue.priority')
                             ->getQuery()
                             ->getResult();
         }
@@ -97,6 +101,7 @@ class VenueRepository extends EntityRepository {
                             ->setMaxResults($limit)
                             ->setParameter('venue_name', "%$name%")
                             ->setParameter('venue_id', "$last_id")
+                            ->orderBy('venue.priority')
                             ->getQuery()
                             ->getResult();
         } else {
@@ -105,6 +110,7 @@ class VenueRepository extends EntityRepository {
                             )
                             ->setMaxResults($limit)
                             ->setParameter('venue_name', "%$name%")
+                            ->orderBy('venue.priority')
                             ->getQuery()
                             ->getResult();
         }
