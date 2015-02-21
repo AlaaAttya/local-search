@@ -197,9 +197,9 @@ class Venue {
     /**
      * @var string
      * 
-     * @ORM\Column(name="priority", type="text", nullable=true)
+     * @ORM\Column(name="priority", type="text")
      */
-    private $priority;
+    private $priority = "0";
 
     /**
      * Get id
@@ -401,6 +401,7 @@ class Venue {
         $this->branches = new \Doctrine\Common\Collections\ArrayCollection();
         $this->offers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->menus = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->priority = "0";
     }
 
     /**
@@ -931,9 +932,11 @@ class Venue {
      * @param string $priority
      * @return Venue
      */
-    public function setPriority($priority)
-    {
-        $this->priority = $priority;
+    public function setPriority($priority) {
+        if($priority == null || $priority == '')
+            $this->priority = "0";
+        else         
+            $this->priority = $priority;
 
         return $this;
     }
