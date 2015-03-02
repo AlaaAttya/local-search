@@ -36,6 +36,11 @@ class APIController extends BaseController {
      * @Route("/venue/category/{category_alias}/{limit}/{last_id}/{lang}")
      */
     public function getByCategory($category_alias, $limit = 5, $last_id = null, $lang = 'en') {
+        // Fixes limit and last id not required issue
+        if(!is_numeric($limit)) {
+            $lang = $limit;
+            $limit = 5;
+        }
         $request = $this->getRequest();
         $venues = $this->getDoctrine()->getRepository('DalilakVenueBundle:Venue')->getByCategoryAlias($category_alias, $limit, $last_id);
         $venuesArray = $this->getAppService('util')->entitiesToArray($venues, array('lang' => $lang, 'request' => $request));
@@ -48,6 +53,11 @@ class APIController extends BaseController {
      * @Route("/venue/category-id/{category_id}/{limit}/{last_id}/{lang}")
      */
     public function getByCategoryId($category_id, $limit = 5, $last_id = null, $lang = 'en') {
+        // Fixes limit and last id not required issue
+        if(!is_numeric($limit)) {
+            $lang = $limit;
+            $limit = 5;
+        }
         $request = $this->getRequest();
         $venues = $this->getDoctrine()->getRepository('DalilakVenueBundle:Venue')->getByCategoryId($category_id, $limit, $last_id);
         $venuesArray = $this->getAppService('util')->entitiesToArray($venues, array('lang' => $lang, 'request' => $request));

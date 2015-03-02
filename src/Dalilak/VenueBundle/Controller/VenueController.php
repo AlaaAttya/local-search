@@ -470,4 +470,14 @@ class VenueController extends Controller {
 
         return $this->redirect($this->generateUrl('venue_edit', array('id' => $venue_id)));
     }
+
+    /**
+     * Search page
+     *
+     * @Route("/search/", name="venue_search")
+     * @Template("DalilakVenueBundle:Venue:search.html.twig")
+     */
+    public function searchAction() {
+        return array();
+    }
 }
