@@ -1,18 +1,27 @@
-<!DOCTYPE html>
-<html ng-app="searchApp">
-<head>
-	<title></title>
+{% extends 'DalilakVenueBundle:Layouts:base.html.twig' %}
+
+{% block title %}Search venues{% endblock %}
+{% block scripts %}
+	{{parent()}}
 	<script src="{{asset('bundles/VenueBundle/js/angular.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('bundles/VenueBundle/js/app.js')}}"></script>
 	<script type="text/javascript" src="{{asset('bundles/VenueBundle/js/services/searchService.js')}}"></script>
 	<script type="text/javascript" src="{{asset('bundles/VenueBundle/js/controllers/userController.js')}}"></script>
-</head>
-<body>
-<div>
+{% endblock %}
+{% block styles %}{{parent()}}{% endblock %}
+
+{% block content -%}
+<div ng-app="searchApp" class="col-md-offset-5 col-lg-offset-5 col-md-5 col-xs-5 col-lg-5 col-sm-5">
 	<div ng-controller="userController">
-		<input ng-model="username" />
-		<pre ng-show="username">{{'{{ events }}'}}</pre>
+		<input placeholder="type venue name to search..." class="form-control col-md-5 col-xs-5 col-lg-5 col-sm-5" ng-model="username" />
+		<div style="padding-top:85px">
+			<ul>
+				<li ng-repeat="event in events">
+					<a href="/venue/{{'{{event.id}}'}}">{{'{{event.name}}'}}</a>
+					<hr />
+				</li>
+			</ul>
+		</div>
 	</div>
-</div>	
-</body>
-</html>
+</div>
+{% endblock %}
