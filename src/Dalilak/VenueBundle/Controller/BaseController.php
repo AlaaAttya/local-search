@@ -26,6 +26,9 @@ class BaseController extends Controller {
         $response = new Response();
         $response->setContent(json_encode($params));
         $response->headers->set('Content-Type', 'application/json');
+        if(isset($_GET['callback'])){
+            $response->setContent($_GET['callback'] . "(" . json_encode($params) . ")");        
+        }
         return $response;
     }
 

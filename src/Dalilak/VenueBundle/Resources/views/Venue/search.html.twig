@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html ng-app="searchApp">
+<head>
+	<title></title>
+	<script src="{{asset('bundles/VenueBundle/js/angular.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('bundles/VenueBundle/js/app.js')}}"></script>
+	<script type="text/javascript" src="{{asset('bundles/VenueBundle/js/services/searchService.js')}}"></script>
+	<script type="text/javascript" src="{{asset('bundles/VenueBundle/js/controllers/userController.js')}}"></script>
+</head>
+<body>
+<div>
+	<div ng-controller="userController">
+		<input ng-model="username" />
+		<pre ng-show="username">{{'{{ events }}'}}</pre>
+	</div>
+</div>	
+</body>
+</html>
