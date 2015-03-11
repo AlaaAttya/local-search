@@ -573,7 +573,7 @@ class Venue {
         if(!isset($params['lang']) || empty($params['lang'])){
             $params['lang'] = 'en';
         }
-
+        
         $venue = array(
             'id' => $this->id,
             'priority' => $this->priority,
@@ -594,7 +594,8 @@ class Venue {
             'services' => $this->getServices($params['lang']),
             'categories' => $this->getCategoriesAsArray(),
             'phones' => $this->getPhonesAsArray(),
-            'branches' => $this->getBranchesAsArray()
+            'branches' => $this->getBranchesAsArray(),
+            'url' => $params['router']->generate('venue_show', array('id' => $this->id))
         );
         return $venue;
     }

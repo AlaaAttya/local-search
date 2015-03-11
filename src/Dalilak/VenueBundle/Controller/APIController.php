@@ -70,7 +70,7 @@ class APIController extends BaseController {
     public function getByName($name, $limit = 5, $last_id = null, $lang = 'en') {
         $request = $this->getRequest();
         $venues = $this->getDoctrine()->getRepository('DalilakVenueBundle:Venue')->findByName($name, $limit, $last_id);
-        $venuesArray = $this->getAppService('util')->entitiesToArray($venues, array('lang' => $lang, 'request' => $request));
+        $venuesArray = $this->getAppService('util')->entitiesToArray($venues, array('lang' => $lang, 'request' => $request, 'router' => $this->get('router')));
         return $this->prepareResponse($venuesArray);
     }
 
