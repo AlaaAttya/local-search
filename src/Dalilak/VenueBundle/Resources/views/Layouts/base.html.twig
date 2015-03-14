@@ -6,6 +6,10 @@
             <link rel="stylesheet" type="text/css" href="{{asset('bundles/bower_components/bootstrap/dist/css/bootstrap.min.css')}}" />
             <link rel="stylesheet" type="text/css" href="{{asset('bundles/VenueBundle/css/main.css')}}" />
         {% endblock %}
+        <script type="text/javascript">
+        var Dalilak = {};
+        Dalilak.baseurl = "{{ app.request.getBaseURL() }}";
+        </script>
     </head>
     <body>
 
