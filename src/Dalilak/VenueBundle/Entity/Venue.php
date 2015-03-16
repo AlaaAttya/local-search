@@ -594,9 +594,12 @@ class Venue {
             'services' => $this->getServices($params['lang']),
             'categories' => $this->getCategoriesAsArray(),
             'phones' => $this->getPhonesAsArray(),
-            'branches' => $this->getBranchesAsArray(),
-            'url' => $params['router']->generate('venue_show', array('id' => $this->id))
+            'branches' => $this->getBranchesAsArray()
         );
+
+        if(isset($params['router'])) {
+            $venue['url'] = $params['router']->generate('venue_show', array('id' => $this->id));
+        }
         return $venue;
     }
 
